@@ -1,7 +1,8 @@
 .footer-basic {
   min-height: 100%;
-    margin-top: 15%;
+    margin-top: 140px;
     color:#fff;
+    bottom: 0;
   }
   
   .footer-basic .social {
