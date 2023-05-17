@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@700&display=swap'); 
 
+html{
+    min-height: 100%;
+}
 body{ 
+    min-height: 100%;
     background-color:#062C5A;
     padding:0;
     margin:0;
