@@ -4,7 +4,7 @@ html{
     height: 100%;
 }
 body{ 
-    min-height: 100%;
+    min-height: 100vh;
     padding:0;
     margin:0;
     box-sizing:border-box;
@@ -127,6 +127,8 @@ body{
           margin-top: 140px;
           color:#fff;
           bottom: 0;
+          position: relative;
+          margin-bottom: 0%;
         }
         
         .footer-basic .social {
@@ -162,3 +164,15 @@ body{
         }
         
    
+        #containerbWC {
+            margin: 0px auto;
+            width: 500px;
+            height: 375px;
+            border: 10px #333 solid;
+        }
+        #bwcelement {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+        }
+
