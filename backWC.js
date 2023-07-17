@@ -18,7 +18,8 @@ window.addEventListener('load', function () {
       selectedDeviceId = videoInputDevices[0].deviceId
 
       document.getElementById('startButton').addEventListener('click', () => {
-          decodeOnce(codeReader, selectedDeviceId);
+        document.body.style.backgroundColor = 'transparent';  
+        decodeOnce(codeReader, selectedDeviceId);
 
         console.log(`Started decode from camera with id ${selectedDeviceId}`)
       })

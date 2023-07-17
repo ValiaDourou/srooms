@@ -171,29 +171,45 @@ body{
    
         #containerbWC {
             margin: 0px auto;
-            width: 80%;
+            width: 90%;
             border-radius: 10px;
-        }
-        #video {
-            width: 75%;
-            height: auto;
-            border-radius: 10px;
+            min-height: 274px;
+            max-height: 300px;   
         }
 
-        #logg{
-        border:none;
-        outline:none;
-        height:50px;
-        width: 50px;
-        font-size: 17px;
-        background:#af2d99;
-        margin-left: auto;
-        margin-right: 10px;
-        margin-top: 30px;
-        margin-bottom:10px;
-        float: right;
-        color:#fff;
-        border-radius:20px;
-        padding: 0px 10px;
-        text-align:center;}
+        #videoBG {
+            width: 75%;
+            height: auto;
+            min-height: 300px;
+            border-radius: 25px;
+            position: relative;
+            margin: auto;
+            max-height: 300px;
+        }
+
+        #video{
+            width: 100%;
+            height: auto;
+            min-height: 300px;
+            border-radius: 25px;
+            max-height: 300px;
+        }
+
+        #logg {
+            border:none;
+            outline:none;
+            height:50px;
+            width: 50px;
+            font-size: 17px;
+            background:#af2d99;
+            margin-left: auto;
+            margin-right: 10px;
+            margin-top: 30px;
+            margin-bottom:10px;
+            float: right;
+            color:#fff;
+            border-radius:20px;
+            padding: 0px 10px;
+            text-align:center;
+        }
 
