@@ -1,25 +1,29 @@
-const video = document.getElementById("bwcelement");
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      // camera akse
-      navigator.mediaDevices.getUserMedia({ video: true }).then(async function(stream) {
-        // balto strim sto video eleme
-        video.srcObject = stream;
+function decodeOnce(codeReader, selectedDeviceId) {
+  codeReader.decodeFromInputVideoDevice(selectedDeviceId, 'video').then((result) => {
+    console.log(result)
+    document.getElementById('result').textContent = result.text
+  }).catch((err) => {
+    console.error(err)
+    document.getElementById('result').textContent = err
+  })
+}
 
-        // arxinas ton qr code sCane
-        const codeReader = new ZXing.BrowserQRCodeReader();
-        // scanar gia qr
-        codeReader.decodeFromVideoDevice(undefined, "bwcelement", function(result) {
-          // to brhke
-          console.log('Detected QR code:', result.text);
-          alert('Detected QR code: ' + result.text);
-        }, function(error) {
-          // arxidia brhke
-          console.error(error);
-        });
-      }).catch(function(error) {
-        // de brhke th camera
-        console.error('Unable to access the camera:', error);
-      });
-    } else {
-      console.error('Media devices are not supported.');
-    }
+window.addEventListener('load', function () {
+  let selectedDeviceId;
+  const codeReader = new ZXing.BrowserQRCodeReader()
+  console.log('ZXing code reader initialized')
+
+  codeReader.getVideoInputDevices()
+    .then((videoInputDevices) => {
+      selectedDeviceId = videoInputDevices[0].deviceId
+
+      document.getElementById('startButton').addEventListener('click', () => {
+          decodeOnce(codeReader, selectedDeviceId);
+
+        console.log(`Started decode from camera with id ${selectedDeviceId}`)
+      })
+    })
+    .catch((err) => {
+      console.error(err)
+    })
+})

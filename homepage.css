@@ -30,8 +30,8 @@ body{
    
    .myform {
     text-align:center;
-    width:360px;
-    height:360px;
+    width:100%;
+    height:450px;
     max-width:100%;
     overflow-y: auto;
     background:#b39bc8;
@@ -170,7 +170,7 @@ body{
             height: 375px;
             border: 10px #333 solid;
         }
-        #bwcelement {
+        #video {
             width: 100%;
             max-width: 400px;
             height: auto;
