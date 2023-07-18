@@ -28,6 +28,8 @@ form.onsubmit = async function(event) {
    else{
    var token = obj.token;
    var rtoken = obj.refreshToken;
+   statusDiv.textContent="";
+
    const response2 = await  fetch('http://localhost:8080/api/users?pageSize=10&page=0', {method: 'GET', headers:{
       'Content-Type': 'application/json',
       'Accept':'application/json',
@@ -35,17 +37,24 @@ form.onsubmit = async function(event) {
        }
      })
    var obju = await response2.json();
-   var obj = JSON.stringify(obju);
-   const myArray = obj.split("\"name\":");
-   for(var i=0;i<myArray.length;i++){
-      var mys=myArray[i].split("\"id\":");
-     console.log(mys);
+   var obj = Object.keys(obju.data).map((key) => [key, obju.data[key]]);
+   var uid;
+   var uauth;
+   for(var i=0;i<obj.length;i++){
+      if(obj[i][1].email==user){
+      uid=obj[i][1].id.id;
+      uauth=obj[i][1].authority;
+      }
    }
+
    var formData = new FormData();
    formData.append('token', token);
    formData.append('rtoken', rtoken);
    formData.append('act',0);
+   formData.append('uid',uid);
+   formData.append('uauth',uauth);
    const response1 = await fetch('./tokens.php',{ method: 'POST', body: formData });
+   document.location.href = 'homepage.html';
    }
 
 }

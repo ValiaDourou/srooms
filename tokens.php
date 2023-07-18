@@ -7,6 +7,8 @@
     if($act=='0'){
     $_SESSION['token'] = $_POST['token'];
     $_SESSION['rtoken'] = $_POST['rtoken'];
+    $_SESSION['uid'] = $_POST['uid'];
+    $_SESSION['uauth'] = $_POST['uauth'];
     }
     else{
     $arr[]=$_SESSION['token'];

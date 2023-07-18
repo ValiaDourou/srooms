@@ -1,10 +1,8 @@
 function decodeOnce(codeReader, selectedDeviceId) {
   codeReader.decodeFromInputVideoDevice(selectedDeviceId, 'video').then((result) => {
-    console.log(result)
-    document.getElementById('result').textContent = result.text
+    console.log(result.text)
   }).catch((err) => {
     console.error(err)
-    document.getElementById('result').textContent = err
   })
 }
 
@@ -18,8 +16,7 @@ window.addEventListener('load', function () {
       selectedDeviceId = videoInputDevices[0].deviceId
 
       document.getElementById('startButton').addEventListener('click', () => {
-        document.body.style.backgroundColor = 'transparent';  
-        decodeOnce(codeReader, selectedDeviceId);
+          decodeOnce(codeReader, selectedDeviceId);
 
         console.log(`Started decode from camera with id ${selectedDeviceId}`)
       })
