@@ -10,29 +10,29 @@
     </head>
     
     <body>
-
+        <script type="text/javascript" src="logout.js"></script>
         <label class="logo"> <a href="homepage.html"><img src="logo.png" class="myImage"/></a>
             <div class="hello">
                 <p>srooms</p>
             </div>            
-            <button onclick="location.href='logout.php'" id="logg"><img src="logout.png " class="logout"/></button> 
+            <button onclick="logout()" id="logg"><img src="logout.png " class="logout"/></button> 
         </label>
 
-        <script type="text/javascript" src="backWC.js"></script>
+        <script type="text/javascript" src="lightcontrols.js"></script>
             <div class="myform">
                 <h1 class="sensorname">Controls</h1>
                 <div id="containerbWC">
-                        <h2 id="sname">ADAD</h2>
+                        <h2 id="sname"></h2>
                         <div class="controlcontainer">
                             <div class="gridcontainer">
                                 <div class="sensorcontrols1">
                                     <h3 class="pH">Power</h3>
-                                    <button class="powerB">Off</button>
+                                    <button class="powerB" id="pH"></button>
                                 </div>
 
                                 <div class="sensorcontrols2">
                                     <h3 class="iH">Intensity</h3>
-                                    <button class="intensityB">10%</button>
+                                    <button class="intensityB" id="iH"></button>
                                 </div>
                             </div>
                             <div id="videoBG">
@@ -40,8 +40,6 @@
                             </div>
                         </div>
                 </div>
-                <button id="startButton">Finalize</button>
-                <a id="result"></a>
         </div>
 
 

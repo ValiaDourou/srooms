@@ -16,6 +16,7 @@ function decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth)
     var obj = await response.json();
      var formData = new FormData();
      formData.append('dtype', obj.type);
+     formData.append('dname', obj.name);
      formData.append('did', qr);
      formData.append('act',2);
      const response1 = await fetch('./tokens.php',{ method: 'POST', body: formData });
