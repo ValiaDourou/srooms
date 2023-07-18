@@ -1,0 +1,11 @@
+IoT Devices used:
+Light A: 
+server attributes(originals key-value pairs): active->false, intensity->100
+Light B: 
+server attributes(originals key-value pairs): active->false, intensity->75
+Light C: 
+server attributes(originals key-value pairs): active->true, intensity->80
+A/C:
+server attributes(originals key-value pairs): active->false, fan->mid, mode->cool, temperature->27
+Projector:
+server attributes(originals key-value pairs): active->true
