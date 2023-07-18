@@ -1,11 +1,16 @@
 IoT Devices used:
 Light A: 
 server attributes(originals key-value pairs): active->false, intensity->100
+id-->8b726840-257b-11ee-bf2c-99c7948225a1
 Light B: 
 server attributes(originals key-value pairs): active->false, intensity->75
+id-->259bbd40-257c-11ee-bf2c-99c7948225a1
 Light C: 
 server attributes(originals key-value pairs): active->true, intensity->80
+id-->28b6ea80-257d-11ee-bf2c-99c7948225a1
 A/C:
 server attributes(originals key-value pairs): active->false, fan->mid, mode->cool, temperature->27
-Projector:
-server attributes(originals key-value pairs): active->true
+id-->a550cde0-257d-11ee-bf2c-99c7948225a1
+Speakers:
+server attributes(originals key-value pairs): active->false, volume->50, currentSong->https://open.spotify.com/embed/track/09vYLUMM3T0Ewf1oqQHsr0?utm_source=generator
+id-->1326f010-257e-11ee-bf2c-99c7948225a1

@@ -3,6 +3,7 @@ function decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth)
     var statusDiv = document.getElementById('result');
 
     if (result) {
+      statusDiv.textContent=" ";
       var qr=result.text;
     var url= "http://localhost:8080/api/device/info/"+qr;
     const response = await  fetch(url, {method: 'GET', headers:{
@@ -18,7 +19,12 @@ function decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth)
      formData.append('did', qr);
      formData.append('act',2);
      const response1 = await fetch('./tokens.php',{ method: 'POST', body: formData });
-     document.location.href = 'controls.html';
+     if(obj.type=='light'){
+     document.location.href = 'lightcontrols.html';
+     }
+     else{
+      console.log("hi");
+     }
      }
 
     }
@@ -31,7 +37,7 @@ function decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth)
       }
 
       if (err instanceof ZXing.FormatException) {
-        statusDiv.textContent=='A code was found, but it was in a invalid format.';
+        statusDiv.textContent='A code was found, but it was in a invalid format.';
       }
     }
   })
