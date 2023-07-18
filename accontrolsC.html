@@ -4,31 +4,45 @@
         <meta charset="UTF-8">
         <title>srooms</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="homepage.css">
+        <link rel="stylesheet" type="text/css" href="controls.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
         <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
     </head>
     
     <body>
-        <script type="text/javascript" src="logout.js"></script>
+
         <label class="logo"> <a href="homepage.html"><img src="logo.png" class="myImage"/></a>
             <div class="hello">
                 <p>srooms</p>
             </div>            
-            <button onclick="logout()" id="logg"><img src="logout.png " class="logout"/></button> 
+            <button onclick="location.href='logout.php'" id="logg"><img src="logout.png " class="logout"/></button> 
         </label>
 
         <script type="text/javascript" src="backWC.js"></script>
             <div class="myform">
+                <h1 class="sensorname">Controls</h1>
                 <div id="containerbWC">
-                    <div id="videoBG">
-                    <video id="video" poster="qrcode.png"></video>
-                    </div>
+                        <h2 id="sname">ADAD</h2>
+                        <div class="controlcontainer">
+                            <div class="gridcontainerACC">
+                                <div class="sensorcontrols1">
+                                    <h3 class="pH">Power</h3>
+                                    <button class="powerB">Off</button>
+                                </div>
+
+                                <div class="sensorcontrols3">
+                                    <h3 class="iB">Temperature</h3>
+                                    <button class="intensityB">24℃</button>
+                                </div>
+                            </div>
+                            <div id="videoBG">
+                                <video id="video" poster="choose.png"></video>
+                            </div>
+                        </div>
                 </div>
+                <button id="startButton">Finalize</button>
                 <a id="result"></a>
-                <br>
-                <button id="startButton">Scan</button>              
-            </div>
+        </div>
             <div class="footer-basic">
                 <div class="social">
                     <a href="https://www.facebook.com/valia.dourou">

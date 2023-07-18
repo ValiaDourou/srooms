@@ -242,17 +242,23 @@ body{
             margin-top: 10px;
           }
 
+          .myform .songS{
+            margin: auto;
+            margin-top: 10px;
+            padding: 0px 0px;
+          }
+
           .myform .pH{
             display: inline-block;
             margin: auto;
           }
 
-          .myform .iH{
+          .myform .iH, .myform .iB{
             display: inline-block;
             margin: auto;
           }
 
-          .myform .sensorcontrols1, .myform .sensorcontrols2{
+          .myform .sensorcontrols1, .myform .sensorcontrols2, .myform .sensorcontrols3{
             width: 100%;
             margin-bottom: 10px;
             display: grid;
@@ -271,4 +277,27 @@ body{
             border-radius: 10px;
             padding: 5px;
             border: 2px solid #962383;
+            margin-bottom: 10px;
           }
+
+          .gridcontainerLC{
+            display: grid;
+            grid-template-columns: auto;
+          }
+
+            .gridcontainerAC, .gridcontainerACC{
+              display: grid;
+              grid-template-columns: auto auto ;
+            }
+
+            .gridcontainerS{
+              display: grid;
+              grid-template-columns: auto auto auto;
+            }
+
+            .gridcontainerSC{
+              display: grid;
+              grid-template-columns: auto auto;
+}
+
+        
