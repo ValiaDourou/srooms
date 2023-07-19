@@ -36,6 +36,10 @@ form.onsubmit = async function(event) {
       'X-Authorization': 'Bearer '+ token
        }
      })
+   if(response2.status==403){
+      statusDiv.textContent="Due to your authority, you can't alter the state of the devices.";
+   }
+   else{
    var obju = await response2.json();
    var obj = Object.keys(obju.data).map((key) => [key, obju.data[key]]);
    var uid;
@@ -55,6 +59,7 @@ form.onsubmit = async function(event) {
    formData.append('uauth',uauth);
    const response1 = await fetch('./tokens.php',{ method: 'POST', body: formData });
    document.location.href = 'homepage.html';
+}
    }
 
 }
