@@ -45,6 +45,7 @@ function decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth)
   
   window.addEventListener('load', async function () {
     var pH = document.getElementById('pH');
+    var tH = document.getElementById('tH');
     var sname = document.getElementById('sname');    
     let selectedDeviceId;
     const codeReader = new ZXing.BrowserQRCodeReader()
@@ -79,19 +80,27 @@ function decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth)
     })
     var obj = await response1.json();
     for(var i=0;i<obj.length;i++){
-    if(uauth!='CUSTOMER_USER' && obj[i].key=='intensity'){
-    var iH = document.getElementById('iH');
-    iH.innerHTML=obj[i].value;
-    }
-    if(obj[i].key=='active'){
-    if(obj[i].value==false){
-    pH.innerHTML="OFF";
-    }
-    else{
-    pH.innerHTML="ON";
-    }
-  }
-  }
+        if(uauth!='CUSTOMER_USER' && obj[i].key=='fan'){
+            var fH = document.getElementById('fH');
+            fH.innerHTML=obj[i].value;
+        }
+        if(uauth!='CUSTOMER_USER' && obj[i].key=='mode'){
+            var mH = document.getElementById('mH');
+
+            mH.innerHTML=obj[i].value;
+        }
+        if(obj[i].key=='temperature'){
+            tH.innerHTML=obj[i].value;
+        }
+        if(obj[i].key=='active'){
+        if(obj[i].value==false){
+        pH.innerHTML="OFF";
+        }
+        else{
+        pH.innerHTML="ON";
+        }
+      }
+      }
   
     codeReader.getVideoInputDevices()
       .then((videoInputDevices) => {
@@ -103,7 +112,17 @@ function decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth)
           console.log(`Started decode from camera with id ${selectedDeviceId}`)
         })
         if(uauth!='CUSTOMER_USER'){
-        document.getElementById('iH').addEventListener('click', () => {
+        document.getElementById('fH').addEventListener('click', () => {
+            decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth);
+  
+          console.log(`Started decode from camera with id ${selectedDeviceId}`)
+        })
+        document.getElementById('mH').addEventListener('click', () => {
+            decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth);
+  
+          console.log(`Started decode from camera with id ${selectedDeviceId}`)
+        })
+        document.getElementById('tH').addEventListener('click', () => {
             decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth);
   
           console.log(`Started decode from camera with id ${selectedDeviceId}`)

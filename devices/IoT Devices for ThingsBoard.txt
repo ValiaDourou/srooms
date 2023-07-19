@@ -13,4 +13,4 @@ server attributes(originals key-value pairs): active->false, fan->mid, mode->coo
 id-->a550cde0-257d-11ee-bf2c-99c7948225a1
 Speakers:
 server attributes(originals key-value pairs): active->false, volume->50, currentSong->https://open.spotify.com/embed/track/09vYLUMM3T0Ewf1oqQHsr0?utm_source=generator
-id-->1326f010-257e-11ee-bf2c-99c7948225a1
+id-->cc96ff30-2624-11ee-bf2c-99c7948225a1

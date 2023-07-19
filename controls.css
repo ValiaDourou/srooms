@@ -285,8 +285,7 @@ body{
             grid-template-columns: auto;
           }
 
-            .gridcontainerAC, .gridcontainerACC{
-              display: grid;
+             .gridcontainerACC{
               grid-template-columns: auto auto ;
             }
 
@@ -295,7 +294,7 @@ body{
               grid-template-columns: auto auto auto;
             }
 
-            .gridcontainerSC{
+            .gridcontainerSC,.gridcontainerAC{
               display: grid;
               grid-template-columns: auto auto;
 }
