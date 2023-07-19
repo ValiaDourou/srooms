@@ -201,7 +201,7 @@ body{
             margin: auto;
             max-height: 300px;
         }
-
+        
         #video{
             width: 100%;
             height: auto;
@@ -281,11 +281,11 @@ body{
           }
 
           .gridcontainerLC{
-            display: grid;
             grid-template-columns: auto;
           }
 
              .gridcontainerACC{
+              display: grid;
               grid-template-columns: auto auto ;
             }
 
