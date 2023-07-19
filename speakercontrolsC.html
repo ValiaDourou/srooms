@@ -10,15 +10,16 @@
     </head>
     
     <body>
+        <script type="text/javascript" src="logout.js"></script>
 
         <label class="logo"> <a href="homepage.html"><img src="logo.png" class="myImage"/></a>
             <div class="hello">
                 <p>srooms</p>
             </div>            
-            <button onclick="location.href='logout.php'" id="logg"><img src="logout.png " class="logout"/></button> 
+            <button onclick="logout()" id="logg"><img src="logout.png " class="logout"/></button> 
         </label>
 
-        <script type="text/javascript" src="backWC.js"></script>
+        <script type="text/javascript" src="speakcontrols.js"></script>
             <div class="myform">
                 <h1 class="sensorname">Controls</h1>
                 <div id="containerbWC">
@@ -27,12 +28,12 @@
                             <div class="gridcontainerSC">
                                 <div class="sensorcontrols1">
                                     <h3 class="pH">Power</h3>
-                                    <button class="powerB">Off</button>
+                                    <button class="powerB" id="pH"></button>
                                 </div>
 
                                 <div class="sensorcontrols2">
                                     <h3 class="iB">Volume</h3>
-                                    <button class="intensityB">50</button>
+                                    <button class="intensityB" id="vH"></button>
                                 </div>
                             </div>
                             <div id="videoBG">
@@ -40,7 +41,7 @@
                             </div>
                         </div>
                 </div>
-                <iframe style="border-radius:20px; border: 2px solid #962383;" src="https://open.spotify.com/embed/track/09vYLUMM3T0Ewf1oqQHsr0?utm_source=generator" width="80%" height="152" frameBorder="1" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" autoplay="1"></iframe>
+                <iframe id="cs" style="border-radius:20px; border: 2px solid #962383;" width="80%" height="152" frameBorder="1" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" autoplay="1"></iframe>
                 <a id="result"></a>
         </div>
             <div class="footer-basic">

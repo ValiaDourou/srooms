@@ -21,11 +21,29 @@ function decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth)
      formData.append('act',2);
      const response1 = await fetch('./tokens.php',{ method: 'POST', body: formData });
      if(obj.type=='light'){
+      if(uauth=='TENANT_ADMIN'){
      document.location.href = 'lightcontrols.html';
+      }
+      else{
+        document.location.href = 'lightcontrolsC.html';
+      }
      }
-     else{
-      console.log("hi");
-     }
+     else if(obj.type=='a/c'){
+      if(uauth=='TENANT_ADMIN'){
+        document.location.href = 'accontrols.html';
+         }
+         else{
+           document.location.href = 'accontrolsC.html';
+         }    
+        }
+     else if(obj.type=='speakers'){
+      if(uauth=='TENANT_ADMIN'){
+        document.location.href = 'speakercontrols.html';
+         }
+         else{
+           document.location.href = 'speakercontrolsC.html';
+         }    
+    }
      }
 
     }

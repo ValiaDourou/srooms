@@ -102,7 +102,7 @@ function decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth)
   
           console.log(`Started decode from camera with id ${selectedDeviceId}`)
         })
-        if(uauth!='CUSTOMER_USER'){
+        if(uauth=='TENANT_ADMIN'){
         document.getElementById('iH').addEventListener('click', () => {
             decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth);
   

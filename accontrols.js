@@ -111,18 +111,18 @@ function decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth)
   
           console.log(`Started decode from camera with id ${selectedDeviceId}`)
         })
-        if(uauth!='CUSTOMER_USER'){
+        document.getElementById('tH').addEventListener('click', () => {
+            decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth);
+  
+          console.log(`Started decode from camera with id ${selectedDeviceId}`)
+        })
+        if(uauth=='TENANT_ADMIN'){
         document.getElementById('fH').addEventListener('click', () => {
             decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth);
   
           console.log(`Started decode from camera with id ${selectedDeviceId}`)
         })
         document.getElementById('mH').addEventListener('click', () => {
-            decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth);
-  
-          console.log(`Started decode from camera with id ${selectedDeviceId}`)
-        })
-        document.getElementById('tH').addEventListener('click', () => {
             decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth);
   
           console.log(`Started decode from camera with id ${selectedDeviceId}`)
