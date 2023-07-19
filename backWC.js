@@ -45,6 +45,9 @@ function decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth)
          }    
     }
      }
+     else if(response.status==403){
+      statusDiv.textContent="You don't have permission to control this device.";
+     }
 
     }
 

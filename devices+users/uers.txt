@@ -1,0 +1,11 @@
+Users for ThingsBoard:
+Tenants:
+email->tenant@thingsboard.org
+password->tenant
+Test Customers (all the test devices are assigned to them):
+1. email->testcustomerA@thingsboard.org
+password->customerA
+2. email->testcustomerB@thingsboard.org
+password->customerB
+3. email->testcustomerC@thingsboard.org
+password->customerC
