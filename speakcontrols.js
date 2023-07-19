@@ -47,6 +47,8 @@ function decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth)
     var pH = document.getElementById('pH');
     var vH = document.getElementById('vH');
     var sname = document.getElementById('sname');    
+    var singer = document.getElementById('artistname');    
+    var song = document.getElementById('songname');    
     let selectedDeviceId;
     const codeReader = new ZXing.BrowserQRCodeReader()
     console.log('ZXing code reader initialized')
@@ -82,18 +84,24 @@ function decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth)
     for(var i=0;i<obj.length;i++){
       if(obj[i].key=='currentSong'){
         var cs= document.getElementById('mp3c');
-        cs.play();
-        //cs.src=obj[i].value;
+        cs.src=obj[i].value;
         }
         if(obj[i].key=='volume'){
             vH.innerHTML=obj[i].value;
         }
+        if(obj[i].key=='singer'){
+          singer.innerHTML=obj[i].value;
+      }
+      if(obj[i].key=='song'){
+        song.innerHTML=obj[i].value;
+    }
         if(obj[i].key=='active'){
         if(obj[i].value==false){
         pH.innerHTML="OFF";
         }
         else{
         pH.innerHTML="ON";
+        cs.play();
         }
       }
       }
