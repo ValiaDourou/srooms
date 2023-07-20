@@ -7,6 +7,9 @@ let gestureRecognizer
       let webcamRunning = false
       const videoHeight = "360px"
       const videoWidth = "480px"  
+      var flist = ["low","mid","high"];
+      var mlist = ["dry","cool","heat"];
+
   
   window.addEventListener('load', async function () {
     var pH = document.getElementById('pH');
@@ -115,16 +118,13 @@ let gestureRecognizer
           clk=3;
           setInterval(function() {
             if(fi==1){
-            if(fH.innerHTML=="low"){
-              fH.innerHTML="mid";
-            }
-            else if(fH.innerHTML=="mid")
-            {
-              fH.innerHTML="high";
-            }
-            else{
-              fH.innerHTML="low";
-            }
+              var index = flist.indexOf(fH.innerHTML);
+              if(flist.length>index+1){
+                fH.innerHTML=flist[index+1];
+                }
+                else{
+                  fH.innerHTML=flist[0];
+                }
           }
           fi=0;
         }, 2000);
@@ -136,16 +136,13 @@ let gestureRecognizer
         clk=4;
         setInterval(function() {
           if(mi==1){
-          if(mH.innerHTML=="dry"){
-            mH.innerHTML="cool";
-          }
-          else if(mH.innerHTML=="cool")
-          {
-            mH.innerHTML="heat";
-          }
-          else{
-            mH.innerHTML="dry";
-          }
+            var index = mlist.indexOf(mH.innerHTML);
+            if(mlist.length>index+1){
+            mH.innerHTML=mlist[index+1];
+            }
+            else{
+              mH.innerHTML=mlist[0];
+            }
         }
         mi=0;
       }, 2000);

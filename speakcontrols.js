@@ -7,6 +7,27 @@ let gestureRecognizer
       let webcamRunning = false
       const videoHeight = "360px"
       const videoWidth = "480px"  
+      var songList = [
+        {
+            song: '1000 Kosmoi',
+            singer: 'Dani Gambino',
+            image: '1000kosmoi.jpg',
+            mp3: '1000KOSMOI.mp3'
+        },
+        {
+          song: '1000 Blunts',
+          singer: '$uicideboy$',
+          image: '1000BLUNTS.jpg',
+          mp3: '1000BLUNTS.mp3'
+        },
+        {
+          song: 'Escapism',
+          singer: 'RAYE',
+          image: 'ESCAPISM.jpg',
+          mp3: 'ESCAPISM.mp3'
+        }
+    ];
+      
   
   window.addEventListener('load', async function () {
     var pH = document.getElementById('pH');
@@ -122,27 +143,21 @@ if (hasGetUserMedia()) {
     clk=3;
     setInterval(function() {
       if(inter==1){
-      if(song.innerHTML=="1000 Kosmoi"){
-        cs.src="1000BLUNTS.mp3";
-        song.innerHTML="1000 Blunts";
-        singer.innerHTML="$uicideboy$";
-        image.src="1000BLUNTS.jpg";
-      }
-      else if(song.innerHTML=="1000 Blunts")
-      {
-        cs.src="ESCAPISM.mp3";
-        song.innerHTML="Escapism";
-        singer.innerHTML="RAYE";
-        image.src="ESCAPISM.jpg";
-
-      }
-      else{
-        cs.src="1000KOSMOI.mp3";
-        song.innerHTML="1000 Kosmoi";
-        singer.innerHTML="Dani Gambino";
-        image.src="1000kosmoi.jpg";
-
-      }
+      var index = songList.findIndex(item => item.song == song.innerHTML);
+      if(songList.length>index+1){
+        cs.src=songList[index+1].mp3;
+      song.innerHTML=songList[index+1].song;
+      singer.innerHTML=songList[index+1].singer;
+      image.src=songList[index+1].image;
+        }
+        else{
+          cs.src=songList[0].mp3;
+          song.innerHTML=songList[0].song;
+          singer.innerHTML=songList[0].singer;
+          image.src=songList[0].image;       
+         }
+    
+    
       if(pH.innerHTML=="ON"){
         cs.play();
         }
