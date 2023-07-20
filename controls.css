@@ -370,3 +370,26 @@ body{
 #artist{
   font-size: 20px;
 }
+
+
+#output_canvas{
+  width: 75%;
+  height: auto;
+  min-height: 300px;
+  border-radius: 25px;
+  position: relative;
+  margin: auto;
+  max-height: 300px;
+}
+
+#gesture_output{
+  margin:0;
+  font-size:20px;
+  width: 80%;
+  text-align: center;
+  box-shadow: 0px 0px ;
+  margin: auto;
+  position: relative;
+  justify-content: center;
+  margin-bottom: 5px;
+  }

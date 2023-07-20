@@ -6,8 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
         <link rel="stylesheet" type="text/css" href="controls.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-        <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
-    </head>
+        <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>    </head>
     
     <body>
         <script type="text/javascript" src="logout.js"></script>
@@ -19,7 +20,7 @@
             <button onclick="logout()" id="logg"><img src="logout.png " class="logout"/></button> 
         </label>
 
-        <script type="text/javascript" src="accontrols.js"></script>
+        <script type="module" src="accontrols.js"></script>
             <div class="myform">
                 <h1 class="sensorname">Controls</h1>
                 <div id="containerbWC">
@@ -36,9 +37,11 @@
                                     <button class="intensityB" id="tH"></button>
                                 </div>
                             </div>
-                            <div id="videoBG">
-                                <video id="video" poster="choose.png"></video>
+                            <div style="position: relative;">
+                                <video id="video" poster="choose.png" autoplay playsinline></video>
+                                <canvas class="output_canvas" id="output_canvas" width="1280" height="720" style="position: absolute; left: 0px; top: 0px;"></canvas>
                             </div>
+                            <h1 id='gesture_output'></h1>
                         </div>
                 </div>
         </div>
