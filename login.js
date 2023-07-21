@@ -20,8 +20,6 @@ form.onsubmit = async function(event) {
         
    var obj = await response.json();
 
-   console.log(obj);
-
    if(obj.hasOwnProperty('status')){
       statusDiv.textContent="Authentication failed. Please check your credentials.";
    }
@@ -30,37 +28,36 @@ form.onsubmit = async function(event) {
    var rtoken = obj.refreshToken;
    statusDiv.textContent="";
 
-   const response2 = await  fetch('http://localhost:8080/api/users?pageSize=10&page=0', {method: 'GET', headers:{
+   const response2 = await  fetch('http://localhost:8080/api/auth/user', {method: 'GET', headers:{
       'Content-Type': 'application/json',
       'Accept':'application/json',
       'X-Authorization': 'Bearer '+ token
        }
      })
-   if(response2.status==403){
+
+   var obj = await response2.json();
+   var uid;
+   var uauth;
+      if(obj.email==user){
+      uid=obj.id.id;
+      uauth=obj.authority;
+      }
+   if(uauth=='SYS_ADMIN'){
       statusDiv.textContent="Due to your authority, you can't alter the state of the devices.";
    }
    else{
-   var obju = await response2.json();
-   var obj = Object.keys(obju.data).map((key) => [key, obju.data[key]]);
-   var uid;
-   var uauth;
-   for(var i=0;i<obj.length;i++){
-      if(obj[i][1].email==user){
-      uid=obj[i][1].id.id;
-      uauth=obj[i][1].authority;
-      }
-   }
-
    var formData = new FormData();
    formData.append('token', token);
    formData.append('rtoken', rtoken);
    formData.append('act',0);
    formData.append('uid',uid);
    formData.append('uauth',uauth);
+   formData.append('user',user);
+   formData.append('pswrd',pswrd);
    const response1 = await fetch('./tokens.php',{ method: 'POST', body: formData });
    document.location.href = 'homepage.html';
-}
    }
+}
 
 }
 

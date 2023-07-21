@@ -27,6 +27,8 @@ let gestureRecognizer
           mp3: 'ESCAPISM.mp3'
         }
     ];
+    var token;
+    var rtoken;
       
   
   window.addEventListener('load', async function () {
@@ -38,8 +40,6 @@ let gestureRecognizer
     var image = document.getElementById('image');    
 
     var clk;
-    var token;
-    var rtoken;
     var uid;
     var uauth;
     var dtype;
@@ -47,6 +47,8 @@ let gestureRecognizer
     var dname;
     var vol;
     var inter=0;
+    var user;
+    var pswrd;
     var formData = new FormData();
      formData.append('act',3);
      const response = await fetch('./tokens.php',{ method: 'POST', body: formData });
@@ -59,7 +61,10 @@ let gestureRecognizer
       dtype=data[4];
       did=data[5];
       dname=data[6];
-     }     sname.innerHTML=dname;
+      user=data[7];
+      pswrd=data[8];
+     }    
+     sname.innerHTML=dname;
      var url="http://localhost:8080/api/plugins/telemetry/DEVICE/"+did+"/values/attributes";
      const response1 = await  fetch(url, {method: 'GET', headers:{
         'Content-Type': 'application/json',
@@ -67,14 +72,28 @@ let gestureRecognizer
         'X-Authorization': 'Bearer '+ token
          }
     })
+    if(response1.status==401){
+      getNewToken(user,pswrd);
+      var url="http://localhost:8080/api/plugins/telemetry/DEVICE/"+did+"/values/attributes";
+     const response2 = await  fetch(url, {method: 'GET', headers:{
+        'Content-Type': 'application/json',
+        'Accept':'application/json',
+        'X-Authorization': 'Bearer '+ token
+         }
+    })
+    var obj = await response2.json();
+    }
+    else{
     var obj = await response1.json();
+    }
     for(var i=0;i<obj.length;i++){
       if(obj[i].key=='currentSong'){
         var cs= document.getElementById('mp3c');
         cs.src=obj[i].value;
         }
         if(obj[i].key=='volume'){
-          vol=parseInt(obj[i].value);
+          vol=parseInt(obj[i].value)/100;
+          cs.volume=vol;
             vH.innerHTML=obj[i].value;
         }
         if(obj[i].key=='singer'){
@@ -92,9 +111,11 @@ let gestureRecognizer
         }
         else{
         pH.innerHTML="ON";
-        cs.play();
         }
       }
+      }
+      if( pH.innerHTML=="ON"){
+        cs.play();
       }
 
 const createGestureRecognizer = async () => {
@@ -156,7 +177,7 @@ if (hasGetUserMedia()) {
           ssi=songList[0].singer;
           si=songList[0].image;       
          }
-      if(changeS(did,token,'image','song','singer','currentSong',si,ss,ssi,smp)){
+      if(changeS(did,token,'image','song','singer','currentSong',si,ss,ssi,smp,user,pswrd)){
       cs.src=smp;
       song.innerHTML=ss;
       singer.innerHTML=ssi;
@@ -237,7 +258,7 @@ async function predictWebcam() {
     gestureOutput.style.display = "inline-block"
     gestureOutput.style.width = videoWidth
     const categoryName = results.gestures[0][0].categoryName
-    gMovement(categoryName,did,token);
+    gMovement(categoryName,did,token,user,pswrd);
     const categoryScore = parseFloat(
       results.gestures[0][0].score * 100
     ).toFixed(2)
@@ -251,16 +272,16 @@ async function predictWebcam() {
   }
 }
 
-function gMovement(categoryName,deviceId,token){
+function gMovement(categoryName,deviceId,token,user,pswrd){
   if(clk==1){
     if(categoryName=="Open_Palm"){
-      if(changeT(deviceId,token,'active','true',0)){
+      if(changeT(deviceId,token,'active','true',0,user,pswrd)){
         pH.innerHTML="ON";
         cs.play();
       }
     }
     if(categoryName=="Closed_Fist"){
-      if(changeT(deviceId,token,'active','false',0)){
+      if(changeT(deviceId,token,'active','false',0,user,pswrd)){
       pH.innerHTML="OFF";
       cs.pause();
       }
@@ -268,18 +289,24 @@ function gMovement(categoryName,deviceId,token){
   }
   if(clk==2){
     if(categoryName=="Thumb_Up"){
-      if(vol<100){
-        vol=vol+1;
-        if(changeT(deviceId,token,'volume',vol,1)){
-      vH.innerHTML=vol.toString();
+      if(vol<1){
+        vol=parseFloat(vol.toFixed(2))+0.01;
+        console.log(vol);
+        if(changeT(deviceId,token,'volume',parseInt(vol*100, 10),1,user,pswrd)){
+          cs.volume=vol;
+          var vs=parseInt(vol*100, 10);
+      vH.innerHTML=vs.toString();
         }
       }
     }
     if(categoryName=="Thumb_Down"){
       if(vol>0){
-        vol=vol-1;
-        if(changeT(deviceId,token,'volume',vol,1)){
-      vH.innerHTML=vol.toString();
+        vol=parseFloat(vol.toFixed(2))-0.01;
+        console.log(vol);
+        if(changeT(deviceId,token,'volume',parseInt(vol*100, 10),1,user,pswrd)){
+          cs.volume=vol;
+          var vs=parseInt(vol*100, 10);
+      vH.innerHTML=vs.toString();
         }
       }
     }
@@ -292,7 +319,7 @@ function gMovement(categoryName,deviceId,token){
 }
   })
 
-  async function changeT(deviceId,token,key,value,ios){
+  async function changeT(deviceId,token,key,value,ios,user,pswrd){
     var data;
     if(ios==0){
       data="{\""+key+"\":\""+value+"\"}";
@@ -310,12 +337,16 @@ function gMovement(categoryName,deviceId,token){
     if(response.status==200){
       return true;
        }
+       else if(response.status==401){
+        getNewToken(user,pswrd);
+        changeT(deviceId,token,key,value,ios,user,pswrd);
+       }
        else{
         return false;
        }
   }
 
-  async function changeS(deviceId,token,key1,key2,key3,key4,value1,value2,value3,value4){
+  async function changeS(deviceId,token,key1,key2,key3,key4,value1,value2,value3,value4,user,pswrd){
     var  data="{\""+key1+"\":\""+value1+"\",\""+key2+"\":\""+value2+"\",\""+key3+"\":\""+value3+"\",\""+key4+"\":\""+value4+"\"}";
 
     var url="http://localhost:8080/api/plugins/telemetry/"+deviceId+"/SERVER_SCOPE";
@@ -328,7 +359,30 @@ function gMovement(categoryName,deviceId,token){
     if(response.status==200){
       return true;
        }
+       else if(response.status==401){
+        getNewToken(user,pswrd);
+        changeS(deviceId,token,key1,key2,key3,key4,value1,value2,value3,value4,user,pswrd);
+       }
        else{
         return false;
        }
+  }
+
+  async function getNewToken(user,pswrd){
+    var data= '{\"username\":\"'+user+'\",\"password\":\"'+pswrd+'\"}';
+    const response1 = await  fetch('http://localhost:8080/api/auth/login', {method: 'POST', headers:{
+    'Content-Type': 'application/json',
+    'Accept':'application/json'
+     }, 
+     body:data
+   })
+      
+     var obj = await response1.json();
+     token = obj.token;
+     rtoken = obj.refreshToken;
+     var formData = new FormData();
+     formData.append('token', token);
+     formData.append('rtoken', rtoken);
+     formData.append('act',4);
+     const response2 = await fetch('./tokens.php',{ method: 'POST', body: formData });
   }

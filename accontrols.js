@@ -9,7 +9,8 @@ let gestureRecognizer
       const videoWidth = "480px"  
       var flist = ["low","mid","high"];
       var mlist = ["dry","cool","heat"];
-
+      var token;
+      var rtoken;
   
   window.addEventListener('load', async function () {
     var pH = document.getElementById('pH');
@@ -17,8 +18,6 @@ let gestureRecognizer
     var sname = document.getElementById('sname');    
     
     var clk;
-    var token;
-    var rtoken;
     var uid;
     var uauth;
     var dtype;
@@ -27,6 +26,8 @@ let gestureRecognizer
     var mi=0;
     var fi=0;
     var temp;
+    var user;
+    var pswrd;
     var formData = new FormData();
      formData.append('act',3);
      const response = await fetch('./tokens.php',{ method: 'POST', body: formData });
@@ -39,6 +40,8 @@ let gestureRecognizer
       dtype=data[4];
       did=data[5];
       dname=data[6];
+      user=data[7];
+      pswrd=data[8];
      }
      sname.innerHTML=dname;
      var url="http://localhost:8080/api/plugins/telemetry/DEVICE/"+did+"/values/attributes";
@@ -48,7 +51,20 @@ let gestureRecognizer
         'X-Authorization': 'Bearer '+ token
          }
     })
+    if(response1.status==401){
+      getNewToken(user,pswrd);
+      var url="http://localhost:8080/api/plugins/telemetry/DEVICE/"+did+"/values/attributes";
+     const response2 = await  fetch(url, {method: 'GET', headers:{
+        'Content-Type': 'application/json',
+        'Accept':'application/json',
+        'X-Authorization': 'Bearer '+ token
+         }
+    })
+    var obj = await response2.json();
+    }
+    else{
     var obj = await response1.json();
+    }
     for(var i=0;i<obj.length;i++){
         if(uauth!='CUSTOMER_USER' && obj[i].key=='fan'){
             var fH = document.getElementById('fH');
@@ -72,6 +88,7 @@ let gestureRecognizer
         }
       }
       }
+    
   
       const createGestureRecognizer = async () => {
         const vision = await FilesetResolver.forVisionTasks(
@@ -126,7 +143,7 @@ let gestureRecognizer
                 else{
                   t=flist[0];
                 }
-                if(changeT(did,token,'fan',t,0)){
+                if(changeT(did,token,'fan',t,0,user,pswrd)){
                   fH.innerHTML=t;
                 }
           }
@@ -148,7 +165,7 @@ let gestureRecognizer
             else{
               m=mlist[0];
             }
-            if(changeT(did,token,'mode',m,0)){
+            if(changeT(did,token,'mode',m,0,user,pswrd)){
               mH.innerHTML=m;
             }
         }
@@ -219,7 +236,7 @@ let gestureRecognizer
           gestureOutput.style.display = "inline-block"
           gestureOutput.style.width = videoWidth
           const categoryName = results.gestures[0][0].categoryName
-          gMovement(categoryName,did,token);
+          gMovement(categoryName,did,token,user,pswrd);
           const categoryScore = parseFloat(
             results.gestures[0][0].score * 100
           ).toFixed(2)
@@ -233,15 +250,15 @@ let gestureRecognizer
         }
       }
       
-      function gMovement(categoryName,deviceId,token){
+      function gMovement(categoryName,deviceId,token,user,pswrd){
         if(clk==1){
           if(categoryName=="Open_Palm"){
-            if(changeT(deviceId,token,'active','true',0)){
+            if(changeT(deviceId,token,'active','true',0,user,pswrd)){
             pH.innerHTML="ON";
             }
           }
           if(categoryName=="Closed_Fist"){
-            if(changeT(deviceId,token,'active','false',0)){
+            if(changeT(deviceId,token,'active','false',0,user,pswrd)){
             pH.innerHTML="OFF";
             }
           }
@@ -250,7 +267,7 @@ let gestureRecognizer
           if(categoryName=="Thumb_Up"){
             if(temp<35){
             temp=temp+1;
-            if(changeT(deviceId,token,'temperature',temp,1)){
+            if(changeT(deviceId,token,'temperature',temp,1,user,pswrd)){
             tH.innerHTML=temp.toString();
             }
             }
@@ -258,7 +275,7 @@ let gestureRecognizer
           if(categoryName=="Thumb_Down"){
             if(temp>14){
             temp=temp-1;
-            if(changeT(deviceId,token,'temperature',temp,1)){
+            if(changeT(deviceId,token,'temperature',temp,1,user,pswrd)){
             tH.innerHTML=temp.toString();
             }
             }
@@ -278,7 +295,7 @@ let gestureRecognizer
     
   })
 
-  async function changeT(deviceId,token,key,value,ios){
+  async function changeT(deviceId,token,key,value,ios,user,pswrd){
     var data;
     if(ios==0){
       data="{\""+key+"\":\""+value+"\"}";
@@ -296,7 +313,30 @@ let gestureRecognizer
     if(response.status==200){
       return true;
        }
+       else if(response.status==401){
+        getNewToken(user,pswrd);
+        changeT(deviceId,token,key,value,ios,user,pswrd);
+       }
        else{
         return false;
        }
+  }
+
+  async function getNewToken(user,pswrd){
+    var data= '{\"username\":\"'+user+'\",\"password\":\"'+pswrd+'\"}';
+    const response1 = await  fetch('http://localhost:8080/api/auth/login', {method: 'POST', headers:{
+    'Content-Type': 'application/json',
+    'Accept':'application/json'
+     }, 
+     body:data
+   })
+      
+     var obj = await response1.json();
+     token = obj.token;
+     rtoken = obj.refreshToken;
+     var formData = new FormData();
+     formData.append('token', token);
+     formData.append('rtoken', rtoken);
+     formData.append('act',4);
+     const response2 = await fetch('./tokens.php',{ method: 'POST', body: formData });
   }
