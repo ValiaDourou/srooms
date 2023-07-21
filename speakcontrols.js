@@ -59,8 +59,7 @@ let gestureRecognizer
       dtype=data[4];
       did=data[5];
       dname=data[6];
-     }
-     sname.innerHTML=dname;
+     }     sname.innerHTML=dname;
      var url="http://localhost:8080/api/plugins/telemetry/DEVICE/"+did+"/values/attributes";
      const response1 = await  fetch(url, {method: 'GET', headers:{
         'Content-Type': 'application/json',
@@ -88,7 +87,7 @@ let gestureRecognizer
        image.src=obj[i].value;
      }
         if(obj[i].key=='active'){
-        if(obj[i].value==false){
+        if(obj[i].value=='false'){
         pH.innerHTML="OFF";
         }
         else{
@@ -143,20 +142,25 @@ if (hasGetUserMedia()) {
     clk=3;
     setInterval(function() {
       if(inter==1){
+      var smp,ss,ssi,si;
       var index = songList.findIndex(item => item.song == song.innerHTML);
       if(songList.length>index+1){
-        cs.src=songList[index+1].mp3;
-      song.innerHTML=songList[index+1].song;
-      singer.innerHTML=songList[index+1].singer;
-      image.src=songList[index+1].image;
+      smp=songList[index+1].mp3;
+      ss=songList[index+1].song;
+      ssi=songList[index+1].singer;
+      si=songList[index+1].image;
         }
         else{
-          cs.src=songList[0].mp3;
-          song.innerHTML=songList[0].song;
-          singer.innerHTML=songList[0].singer;
-          image.src=songList[0].image;       
+          smp=songList[0].mp3;
+          ss=songList[0].song;
+          ssi=songList[0].singer;
+          si=songList[0].image;       
          }
-    
+      if(changeS(did,token,'image','song','singer','currentSong',si,ss,ssi,smp)){
+      cs.src=smp;
+      song.innerHTML=ss;
+      singer.innerHTML=ssi;
+      image.src=si;
     
       if(pH.innerHTML=="ON"){
         cs.play();
@@ -165,6 +169,7 @@ if (hasGetUserMedia()) {
         cs.pause();
         }
     }
+  }
     inter=0;
   }, 2000);
     if(webcamRunning===false){
@@ -232,7 +237,7 @@ async function predictWebcam() {
     gestureOutput.style.display = "inline-block"
     gestureOutput.style.width = videoWidth
     const categoryName = results.gestures[0][0].categoryName
-    gMovement(categoryName);
+    gMovement(categoryName,did,token);
     const categoryScore = parseFloat(
       results.gestures[0][0].score * 100
     ).toFixed(2)
@@ -246,36 +251,84 @@ async function predictWebcam() {
   }
 }
 
-function gMovement(categoryName){
+function gMovement(categoryName,deviceId,token){
   if(clk==1){
     if(categoryName=="Open_Palm"){
-      pH.innerHTML="ON";
-      cs.play();
+      if(changeT(deviceId,token,'active','true',0)){
+        pH.innerHTML="ON";
+        cs.play();
+      }
     }
     if(categoryName=="Closed_Fist"){
+      if(changeT(deviceId,token,'active','false',0)){
       pH.innerHTML="OFF";
       cs.pause();
+      }
     }
   }
   if(clk==2){
     if(categoryName=="Thumb_Up"){
       if(vol<100){
-      vol=vol+1;
+        vol=vol+1;
+        if(changeT(deviceId,token,'volume',vol,1)){
       vH.innerHTML=vol.toString();
+        }
       }
     }
     if(categoryName=="Thumb_Down"){
       if(vol>0){
-      vol=vol-1;
+        vol=vol-1;
+        if(changeT(deviceId,token,'volume',vol,1)){
       vH.innerHTML=vol.toString();
+        }
       }
     }
   }
   if(clk==3){
     if(categoryName=="Victory"){
       inter=1;
-      
     }
   }
 }
   })
+
+  async function changeT(deviceId,token,key,value,ios){
+    var data;
+    if(ios==0){
+      data="{\""+key+"\":\""+value+"\"}";
+    }
+    else{
+      data="{\""+key+"\":"+value+"}";
+    }
+    var url="http://localhost:8080/api/plugins/telemetry/"+deviceId+"/SERVER_SCOPE";
+     const response = await  fetch(url, {method: 'POST', headers:{
+        'Content-Type': 'application/json',
+        'Accept':'application/json',
+        'X-Authorization': 'Bearer '+ token
+         },body:data
+    })
+    if(response.status==200){
+      return true;
+       }
+       else{
+        return false;
+       }
+  }
+
+  async function changeS(deviceId,token,key1,key2,key3,key4,value1,value2,value3,value4){
+    var  data="{\""+key1+"\":\""+value1+"\",\""+key2+"\":\""+value2+"\",\""+key3+"\":\""+value3+"\",\""+key4+"\":\""+value4+"\"}";
+
+    var url="http://localhost:8080/api/plugins/telemetry/"+deviceId+"/SERVER_SCOPE";
+     const response = await  fetch(url, {method: 'POST', headers:{
+        'Content-Type': 'application/json',
+        'Accept':'application/json',
+        'X-Authorization': 'Bearer '+ token
+         },body:data
+    })
+    if(response.status==200){
+      return true;
+       }
+       else{
+        return false;
+       }
+  }

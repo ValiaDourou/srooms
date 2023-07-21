@@ -64,7 +64,7 @@ let gestureRecognizer
             tH.innerHTML=obj[i].value;
         }
         if(obj[i].key=='active'){
-        if(obj[i].value==false){
+        if(obj[i].value=='false'){
         pH.innerHTML="OFF";
         }
         else{
@@ -118,12 +118,16 @@ let gestureRecognizer
           clk=3;
           setInterval(function() {
             if(fi==1){
+              var t;
               var index = flist.indexOf(fH.innerHTML);
               if(flist.length>index+1){
-                fH.innerHTML=flist[index+1];
+                t=flist[index+1];
                 }
                 else{
-                  fH.innerHTML=flist[0];
+                  t=flist[0];
+                }
+                if(changeT(did,token,'fan',t,0)){
+                  fH.innerHTML=t;
                 }
           }
           fi=0;
@@ -136,12 +140,16 @@ let gestureRecognizer
         clk=4;
         setInterval(function() {
           if(mi==1){
+            var m;
             var index = mlist.indexOf(mH.innerHTML);
             if(mlist.length>index+1){
-            mH.innerHTML=mlist[index+1];
+            m=mlist[index+1];
             }
             else{
-              mH.innerHTML=mlist[0];
+              m=mlist[0];
+            }
+            if(changeT(did,token,'mode',m,0)){
+              mH.innerHTML=m;
             }
         }
         mi=0;
@@ -211,7 +219,7 @@ let gestureRecognizer
           gestureOutput.style.display = "inline-block"
           gestureOutput.style.width = videoWidth
           const categoryName = results.gestures[0][0].categoryName
-          gMovement(categoryName);
+          gMovement(categoryName,did,token);
           const categoryScore = parseFloat(
             results.gestures[0][0].score * 100
           ).toFixed(2)
@@ -225,26 +233,34 @@ let gestureRecognizer
         }
       }
       
-      function gMovement(categoryName){
+      function gMovement(categoryName,deviceId,token){
         if(clk==1){
           if(categoryName=="Open_Palm"){
+            if(changeT(deviceId,token,'active','true',0)){
             pH.innerHTML="ON";
+            }
           }
           if(categoryName=="Closed_Fist"){
+            if(changeT(deviceId,token,'active','false',0)){
             pH.innerHTML="OFF";
+            }
           }
         }
         if(clk==2){
           if(categoryName=="Thumb_Up"){
             if(temp<35){
             temp=temp+1;
+            if(changeT(deviceId,token,'temperature',temp,1)){
             tH.innerHTML=temp.toString();
+            }
             }
           }
           if(categoryName=="Thumb_Down"){
             if(temp>14){
             temp=temp-1;
+            if(changeT(deviceId,token,'temperature',temp,1)){
             tH.innerHTML=temp.toString();
+            }
             }
           }
         }
@@ -261,3 +277,26 @@ let gestureRecognizer
       }
     
   })
+
+  async function changeT(deviceId,token,key,value,ios){
+    var data;
+    if(ios==0){
+      data="{\""+key+"\":\""+value+"\"}";
+    }
+    else{
+      data="{\""+key+"\":"+value+"}";
+    }
+    var url="http://localhost:8080/api/plugins/telemetry/"+deviceId+"/SERVER_SCOPE";
+     const response = await  fetch(url, {method: 'POST', headers:{
+        'Content-Type': 'application/json',
+        'Accept':'application/json',
+        'X-Authorization': 'Bearer '+ token
+         },body:data
+    })
+    if(response.status==200){
+      return true;
+       }
+       else{
+        return false;
+       }
+  }

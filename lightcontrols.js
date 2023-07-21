@@ -50,7 +50,7 @@ let gestureRecognizer
     iH.innerHTML=obj[i].value;
     }
     if(obj[i].key=='active'){
-    if(obj[i].value==false){
+    if(obj[i].value=='false'){
     pH.innerHTML="OFF";
     }
     else{
@@ -161,7 +161,7 @@ let gestureRecognizer
       gestureOutput.style.display = "inline-block"
       gestureOutput.style.width = videoWidth
       const categoryName = results.gestures[0][0].categoryName
-      gMovement(categoryName);
+      gMovement(categoryName,did,token);
       const categoryScore = parseFloat(
         results.gestures[0][0].score * 100
       ).toFixed(2)
@@ -175,29 +175,59 @@ let gestureRecognizer
     }
   }
   
-  function gMovement(categoryName){
+  function gMovement(categoryName,deviceId,token){
     if(clk==1){
       if(categoryName=="Open_Palm"){
+        if(changeT(deviceId,token,'active','true',0)){
         pH.innerHTML="ON";
+        }
       }
       if(categoryName=="Closed_Fist"){
+        if(changeT(deviceId,token,'active','false',0)){
         pH.innerHTML="OFF";
+        }
       }
     }
     if(clk==2){
       if(categoryName=="Thumb_Up"){
         if(inten<100){
         inten=inten+1;
+        if(changeT(deviceId,token,'intensity',inten,1)){
         iH.innerHTML=inten.toString();
+        }
         }
       }
       if(categoryName=="Thumb_Down"){
         if(inten>0){
           inten=inten-1;
+          if(changeT(deviceId,token,'intensity',inten,1)){
         iH.innerHTML=inten.toString();
+          }
         }
       }
     }
   }
     
   })
+  async function changeT(deviceId,token,key,value,ios){
+    var data;
+    if(ios==0){
+      data="{\""+key+"\":\""+value+"\"}";
+    }
+    else{
+      data="{\""+key+"\":"+value+"}";
+    }
+    var url="http://localhost:8080/api/plugins/telemetry/"+deviceId+"/SERVER_SCOPE";
+     const response = await  fetch(url, {method: 'POST', headers:{
+        'Content-Type': 'application/json',
+        'Accept':'application/json',
+        'X-Authorization': 'Bearer '+ token
+         },body:data
+    })
+    if(response.status==200){
+      return true;
+       }
+       else{
+        return false;
+       }
+  }
