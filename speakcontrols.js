@@ -49,6 +49,7 @@ let gestureRecognizer
     var inter=0;
     var user;
     var pswrd;
+    var times=0;
     var formData = new FormData();
      formData.append('act',3);
      const response = await fetch('./tokens.php',{ method: 'POST', body: formData });
@@ -73,7 +74,22 @@ let gestureRecognizer
          }
     })
     if(response1.status==401){
-      getNewToken(user,pswrd);
+      var data= '{\"username\":\"'+user+'\",\"password\":\"'+pswrd+'\"}';
+  const response3 = await  fetch('http://localhost:8080/api/auth/login', {method: 'POST', headers:{
+  'Content-Type': 'application/json',
+  'Accept':'application/json'
+   }, 
+   body:data
+ })
+    
+   var obj1 = await response3.json();
+   token = obj1.token;
+   rtoken = obj1.refreshToken;
+   var formData = new FormData();
+   formData.append('token', token);
+   formData.append('rtoken', rtoken);
+   formData.append('act',4);
+   const response4 = await fetch('./tokens.php',{ method: 'POST', body: formData });
       var url="http://localhost:8080/api/plugins/telemetry/DEVICE/"+did+"/values/attributes";
      const response2 = await  fetch(url, {method: 'GET', headers:{
         'Content-Type': 'application/json',
@@ -86,9 +102,10 @@ let gestureRecognizer
     else{
     var obj = await response1.json();
     }
+    var cs= document.getElementById('mp3c');
+
     for(var i=0;i<obj.length;i++){
       if(obj[i].key=='currentSong'){
-        var cs= document.getElementById('mp3c');
         cs.src=obj[i].value;
         }
         if(obj[i].key=='volume'){
@@ -291,7 +308,6 @@ function gMovement(categoryName,deviceId,token,user,pswrd){
     if(categoryName=="Thumb_Up"){
       if(vol<1){
         vol=parseFloat(vol.toFixed(2))+0.01;
-        console.log(vol);
         if(changeT(deviceId,token,'volume',parseInt(vol*100, 10),1,user,pswrd)){
           cs.volume=vol;
           var vs=parseInt(vol*100, 10);
@@ -302,7 +318,6 @@ function gMovement(categoryName,deviceId,token,user,pswrd){
     if(categoryName=="Thumb_Down"){
       if(vol>0){
         vol=parseFloat(vol.toFixed(2))-0.01;
-        console.log(vol);
         if(changeT(deviceId,token,'volume',parseInt(vol*100, 10),1,user,pswrd)){
           cs.volume=vol;
           var vs=parseInt(vol*100, 10);
@@ -317,72 +332,87 @@ function gMovement(categoryName,deviceId,token,user,pswrd){
     }
   }
 }
+
+async function changeT(deviceId,token,key,value,ios,user,pswrd){
+  var data;
+  if(ios==0){
+    data="{\""+key+"\":\""+value+"\"}";
+  }
+  else{
+    data="{\""+key+"\":"+value+"}";
+  }
+  var url="http://localhost:8080/api/plugins/telemetry/"+deviceId+"/SERVER_SCOPE";
+   const response = await  fetch(url, {method: 'POST', headers:{
+      'Content-Type': 'application/json',
+      'Accept':'application/json',
+      'X-Authorization': 'Bearer '+ token
+       },body:data
   })
+  if(response.status==200){
+    return true;
+     }
+     else if(response.status==401){
+      times++;
+        if(times==1){
+      getNewToken(user,pswrd);
+      changeT(deviceId,token,key,value,ios,user,pswrd);
+        }
+        else{
+          return false;
+        }
+     }
+     else{
+      return false;
+     }
+}
 
-  async function changeT(deviceId,token,key,value,ios,user,pswrd){
-    var data;
-    if(ios==0){
-      data="{\""+key+"\":\""+value+"\"}";
-    }
-    else{
-      data="{\""+key+"\":"+value+"}";
-    }
-    var url="http://localhost:8080/api/plugins/telemetry/"+deviceId+"/SERVER_SCOPE";
-     const response = await  fetch(url, {method: 'POST', headers:{
-        'Content-Type': 'application/json',
-        'Accept':'application/json',
-        'X-Authorization': 'Bearer '+ token
-         },body:data
-    })
-    if(response.status==200){
-      return true;
-       }
-       else if(response.status==401){
-        getNewToken(user,pswrd);
-        changeT(deviceId,token,key,value,ios,user,pswrd);
-       }
-       else{
-        return false;
-       }
-  }
+async function changeS(deviceId,token,key1,key2,key3,key4,value1,value2,value3,value4,user,pswrd){
+  var  data="{\""+key1+"\":\""+value1+"\",\""+key2+"\":\""+value2+"\",\""+key3+"\":\""+value3+"\",\""+key4+"\":\""+value4+"\"}";
 
-  async function changeS(deviceId,token,key1,key2,key3,key4,value1,value2,value3,value4,user,pswrd){
-    var  data="{\""+key1+"\":\""+value1+"\",\""+key2+"\":\""+value2+"\",\""+key3+"\":\""+value3+"\",\""+key4+"\":\""+value4+"\"}";
+  var url="http://localhost:8080/api/plugins/telemetry/"+deviceId+"/SERVER_SCOPE";
+   const response = await  fetch(url, {method: 'POST', headers:{
+      'Content-Type': 'application/json',
+      'Accept':'application/json',
+      'X-Authorization': 'Bearer '+ token
+       },body:data
+  })
+  if(response.status==200){
+    return true;
+     }
+     else if(response.status==401){
+      times++;
+        if(times==1){
+        webcamRunning = false;
+      getNewToken(user,pswrd);
+      changeS(deviceId,token,key1,key2,key3,key4,value1,value2,value3,value4,user,pswrd);
+        }
+        else{
+          return false;
+        }
+     }
+     else{
+      return false;
+     }
+}
 
-    var url="http://localhost:8080/api/plugins/telemetry/"+deviceId+"/SERVER_SCOPE";
-     const response = await  fetch(url, {method: 'POST', headers:{
-        'Content-Type': 'application/json',
-        'Accept':'application/json',
-        'X-Authorization': 'Bearer '+ token
-         },body:data
-    })
-    if(response.status==200){
-      return true;
-       }
-       else if(response.status==401){
-        getNewToken(user,pswrd);
-        changeS(deviceId,token,key1,key2,key3,key4,value1,value2,value3,value4,user,pswrd);
-       }
-       else{
-        return false;
-       }
-  }
-
-  async function getNewToken(user,pswrd){
-    var data= '{\"username\":\"'+user+'\",\"password\":\"'+pswrd+'\"}';
-    const response1 = await  fetch('http://localhost:8080/api/auth/login', {method: 'POST', headers:{
-    'Content-Type': 'application/json',
-    'Accept':'application/json'
-     }, 
-     body:data
-   })
-      
-     var obj = await response1.json();
-     token = obj.token;
-     rtoken = obj.refreshToken;
-     var formData = new FormData();
-     formData.append('token', token);
-     formData.append('rtoken', rtoken);
-     formData.append('act',4);
-     const response2 = await fetch('./tokens.php',{ method: 'POST', body: formData });
-  }
+async function getNewToken(user,pswrd){
+  var data= '{\"username\":\"'+user+'\",\"password\":\"'+pswrd+'\"}';
+  const response1 = await  fetch('http://localhost:8080/api/auth/login', {method: 'POST', headers:{
+  'Content-Type': 'application/json',
+  'Accept':'application/json'
+   }, 
+   body:data
+ })
+    
+   var obj = await response1.json();
+   token = obj.token;
+   rtoken = obj.refreshToken;
+   var formData = new FormData();
+   formData.append('token', token);
+   formData.append('rtoken', rtoken);
+   formData.append('act',4);
+   times=0;
+   enableCam();
+   const response2 = await fetch('./tokens.php',{ method: 'POST', body: formData });
+}
+  })

@@ -28,6 +28,7 @@ let gestureRecognizer
     var temp;
     var user;
     var pswrd;
+    var times=0;
     var formData = new FormData();
      formData.append('act',3);
      const response = await fetch('./tokens.php',{ method: 'POST', body: formData });
@@ -52,7 +53,22 @@ let gestureRecognizer
          }
     })
     if(response1.status==401){
-      getNewToken(user,pswrd);
+      var data= '{\"username\":\"'+user+'\",\"password\":\"'+pswrd+'\"}';
+  const response3 = await  fetch('http://localhost:8080/api/auth/login', {method: 'POST', headers:{
+  'Content-Type': 'application/json',
+  'Accept':'application/json'
+   }, 
+   body:data
+ })
+    
+   var obj1 = await response3.json();
+   token = obj1.token;
+   rtoken = obj1.refreshToken;
+   var formData = new FormData();
+   formData.append('token', token);
+   formData.append('rtoken', rtoken);
+   formData.append('act',4);
+   const response4 = await fetch('./tokens.php',{ method: 'POST', body: formData });
       var url="http://localhost:8080/api/plugins/telemetry/DEVICE/"+did+"/values/attributes";
      const response2 = await  fetch(url, {method: 'GET', headers:{
         'Content-Type': 'application/json',
@@ -293,50 +309,60 @@ let gestureRecognizer
         }
       }
     
+      async function changeT(deviceId,token,key,value,ios,user,pswrd){
+        var data;
+        if(ios==0){
+          data="{\""+key+"\":\""+value+"\"}";
+        }
+        else{
+          data="{\""+key+"\":"+value+"}";
+        }
+        var url="http://localhost:8080/api/plugins/telemetry/"+deviceId+"/SERVER_SCOPE";
+         const response = await  fetch(url, {method: 'POST', headers:{
+            'Content-Type': 'application/json',
+            'Accept':'application/json',
+            'X-Authorization': 'Bearer '+ token
+             },body:data
+        })
+        if(response.status==200){
+          return true;
+           }
+           else if(response.status==401){
+            times++;
+        if(times==1){
+        webcamRunning = false;
+            getNewToken(user,pswrd);
+            changeT(deviceId,token,key,value,ios,user,pswrd);
+        }
+        else{
+          return false;
+        }
+           }
+           else{
+            return false;
+           }
+      }
+    
+      async function getNewToken(user,pswrd){
+        var data= '{\"username\":\"'+user+'\",\"password\":\"'+pswrd+'\"}';
+        const response1 = await  fetch('http://localhost:8080/api/auth/login', {method: 'POST', headers:{
+        'Content-Type': 'application/json',
+        'Accept':'application/json'
+         }, 
+         body:data
+       })
+          
+         var obj = await response1.json();
+         token = obj.token;
+         rtoken = obj.refreshToken;
+         var formData = new FormData();
+         formData.append('token', token);
+         formData.append('rtoken', rtoken);
+         formData.append('act',4);
+         times=0;
+         enableCam();
+         const response2 = await fetch('./tokens.php',{ method: 'POST', body: formData });
+      }
   })
 
-  async function changeT(deviceId,token,key,value,ios,user,pswrd){
-    var data;
-    if(ios==0){
-      data="{\""+key+"\":\""+value+"\"}";
-    }
-    else{
-      data="{\""+key+"\":"+value+"}";
-    }
-    var url="http://localhost:8080/api/plugins/telemetry/"+deviceId+"/SERVER_SCOPE";
-     const response = await  fetch(url, {method: 'POST', headers:{
-        'Content-Type': 'application/json',
-        'Accept':'application/json',
-        'X-Authorization': 'Bearer '+ token
-         },body:data
-    })
-    if(response.status==200){
-      return true;
-       }
-       else if(response.status==401){
-        getNewToken(user,pswrd);
-        changeT(deviceId,token,key,value,ios,user,pswrd);
-       }
-       else{
-        return false;
-       }
-  }
-
-  async function getNewToken(user,pswrd){
-    var data= '{\"username\":\"'+user+'\",\"password\":\"'+pswrd+'\"}';
-    const response1 = await  fetch('http://localhost:8080/api/auth/login', {method: 'POST', headers:{
-    'Content-Type': 'application/json',
-    'Accept':'application/json'
-     }, 
-     body:data
-   })
-      
-     var obj = await response1.json();
-     token = obj.token;
-     rtoken = obj.refreshToken;
-     var formData = new FormData();
-     formData.append('token', token);
-     formData.append('rtoken', rtoken);
-     formData.append('act',4);
-     const response2 = await fetch('./tokens.php',{ method: 'POST', body: formData });
-  }
+  

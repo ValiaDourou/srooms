@@ -1,5 +1,7 @@
 var token;
 var rtoken;
+var user;
+var pswrd;
 function decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth) {
   codeReader.decodeFromInputVideoDeviceContinuously(selectedDeviceId, 'video', async (result, err) => {
     var statusDiv = document.getElementById('result');
@@ -128,8 +130,7 @@ window.addEventListener('load', async function () {
   console.log('ZXing code reader initialized')
   var uid;
   var uauth;
-  var user;
-  var pswrd;
+
   var formData = new FormData();
    formData.append('act',1);
    const response = await fetch('./tokens.php',{ method: 'POST', body: formData });
