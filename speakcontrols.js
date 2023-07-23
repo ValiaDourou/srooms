@@ -354,6 +354,7 @@ async function changeT(deviceId,token,key,value,ios,user,pswrd){
      else if(response.status==401){
       times++;
         if(times==1){
+          webcamRunning = false;
       getNewToken(user,pswrd);
       changeT(deviceId,token,key,value,ios,user,pswrd);
         }
