@@ -10,16 +10,15 @@ form.onsubmit = async function(event) {
    var data= '{\"username\":\"'+user+'\",\"password\":\"'+pswrd+'\"}';
 
    event.preventDefault();
-
+   
+   try{
    const response = await  fetch('http://localhost:8080/api/auth/login', {method: 'POST', headers:{
       'Content-Type': 'application/json',
       'Accept':'application/json'
        }, 
        body:data
      })
-        
    var obj = await response.json();
-
    if(obj.hasOwnProperty('status')){
       statusDiv.textContent="Authentication failed. Please check your credentials.";
    }
@@ -58,6 +57,10 @@ form.onsubmit = async function(event) {
    document.location.href = 'homepage.html';
    }
 }
+   }
+   catch (e){
+      statusDiv.textContent="The server is unavailable, please try again later.";
+   }
 
 }
 

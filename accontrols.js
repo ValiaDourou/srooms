@@ -45,6 +45,7 @@ let gestureRecognizer
       pswrd=data[8];
      }
      sname.innerHTML=dname;
+     try{
      var url="http://localhost:8080/api/plugins/telemetry/DEVICE/"+did+"/values/attributes";
      const response1 = await  fetch(url, {method: 'GET', headers:{
         'Content-Type': 'application/json',
@@ -104,6 +105,11 @@ let gestureRecognizer
         }
       }
       }
+    }
+    catch (e){
+      const response5 = await fetch('./logout.php');
+      document.location.href = 'login.html';
+    }
     
   
       const createGestureRecognizer = async () => {
@@ -159,9 +165,12 @@ let gestureRecognizer
                 else{
                   t=flist[0];
                 }
-                if(changeT(did,token,'fan',t,0,user,pswrd)){
+                let promise = Promise.resolve(changeT(did,token,'fan',t,0,user,pswrd));
+                promise.then(function (val){
+                if(val===true){
                   fH.innerHTML=t;
                 }
+                });
           }
           fi=0;
         }, 2000);
@@ -181,9 +190,12 @@ let gestureRecognizer
             else{
               m=mlist[0];
             }
-            if(changeT(did,token,'mode',m,0,user,pswrd)){
-              mH.innerHTML=m;
-            }
+            let promise = Promise.resolve(changeT(did,token,'mode',m,0,user,pswrd));
+                promise.then(function (val){
+                if(val===true){
+                  mH.innerHTML=m;
+                }
+                });
         }
         mi=0;
       }, 2000);
@@ -269,31 +281,43 @@ let gestureRecognizer
       function gMovement(categoryName,deviceId,token,user,pswrd){
         if(clk==1){
           if(categoryName=="Open_Palm"){
-            if(changeT(deviceId,token,'active','true',0,user,pswrd)){
-            pH.innerHTML="ON";
-            }
+            let promise = Promise.resolve(changeT(deviceId,token,'active','true',0,user,pswrd));
+            promise.then(function (val) {
+              if(val===true){
+                pH.innerHTML="ON";
+                }
+            });
           }
           if(categoryName=="Closed_Fist"){
-            if(changeT(deviceId,token,'active','false',0,user,pswrd)){
+            let promise = Promise.resolve(changeT(deviceId,token,'active','false',0,user,pswrd));
+            promise.then(function (val) {
+              if(val===true){
             pH.innerHTML="OFF";
             }
-          }
+          });
         }
+      }
         if(clk==2){
           if(categoryName=="Thumb_Up"){
             if(temp<35){
             temp=temp+1;
-            if(changeT(deviceId,token,'temperature',temp,1,user,pswrd)){
+            let promise = Promise.resolve(changeT(deviceId,token,'temperature',temp,1,user,pswrd));
+        promise.then(function (val){
+          if(val===true){
             tH.innerHTML=temp.toString();
-            }
+        }
+      });
             }
           }
           if(categoryName=="Thumb_Down"){
             if(temp>14){
             temp=temp-1;
-            if(changeT(deviceId,token,'temperature',temp,1,user,pswrd)){
+            let promise = Promise.resolve(changeT(deviceId,token,'temperature',temp,1,user,pswrd));
+        promise.then(function (val){
+          if(val===true){
             tH.innerHTML=temp.toString();
-            }
+        }
+      });
             }
           }
         }
@@ -318,6 +342,7 @@ let gestureRecognizer
           data="{\""+key+"\":"+value+"}";
         }
         var url="http://localhost:8080/api/plugins/telemetry/"+deviceId+"/SERVER_SCOPE";
+        try{
          const response = await  fetch(url, {method: 'POST', headers:{
             'Content-Type': 'application/json',
             'Accept':'application/json',
@@ -341,10 +366,16 @@ let gestureRecognizer
            else{
             return false;
            }
+          }
+          catch (e){
+            const response5 = await fetch('./logout.php');
+            document.location.href = 'login.html';
+          }
       }
     
       async function getNewToken(user,pswrd){
         var data= '{\"username\":\"'+user+'\",\"password\":\"'+pswrd+'\"}';
+        try{
         const response1 = await  fetch('http://localhost:8080/api/auth/login', {method: 'POST', headers:{
         'Content-Type': 'application/json',
         'Accept':'application/json'
@@ -362,6 +393,11 @@ let gestureRecognizer
          times=0;
          enableCam();
          const response2 = await fetch('./tokens.php',{ method: 'POST', body: formData });
+      }
+      catch (e){
+        const response5 = await fetch('./logout.php');
+      document.location.href = 'login.html';
+      }
       }
   })
 

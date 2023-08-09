@@ -7,6 +7,7 @@ function decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth)
     var statusDiv = document.getElementById('result');
 
     if (result) {
+      try{
       statusDiv.textContent=" ";
       var qr=result.text;
     var url= "http://localhost:8080/api/device/info/"+qr;
@@ -107,6 +108,11 @@ function decodeContinuously(codeReader, selectedDeviceId,token,rtoken,uid,uauth)
          }    
     }
      }
+    }
+    catch (e){
+      const response5 = await fetch('./logout.php');
+      document.location.href = 'login.html';
+    }
 
     }
 

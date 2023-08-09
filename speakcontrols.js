@@ -67,6 +67,7 @@ let gestureRecognizer
      }    
      sname.innerHTML=dname;
      var url="http://localhost:8080/api/plugins/telemetry/DEVICE/"+did+"/values/attributes";
+     try{
      const response1 = await  fetch(url, {method: 'GET', headers:{
         'Content-Type': 'application/json',
         'Accept':'application/json',
@@ -134,6 +135,11 @@ let gestureRecognizer
       if( pH.innerHTML=="ON"){
         cs.play();
       }
+    }
+    catch (e){
+      const response5 = await fetch('./logout.php');
+      document.location.href = 'login.html';
+   }
 
 const createGestureRecognizer = async () => {
   const vision = await FilesetResolver.forVisionTasks(
@@ -194,19 +200,22 @@ if (hasGetUserMedia()) {
           ssi=songList[0].singer;
           si=songList[0].image;       
          }
-      if(changeS(did,token,'image','song','singer','currentSong',si,ss,ssi,smp,user,pswrd)){
-      cs.src=smp;
-      song.innerHTML=ss;
-      singer.innerHTML=ssi;
-      image.src=si;
-    
-      if(pH.innerHTML=="ON"){
-        cs.play();
-        }
-        else{
-        cs.pause();
-        }
-    }
+         let promise = Promise.resolve(changeS(did,token,'image','song','singer','currentSong',si,ss,ssi,smp,user,pswrd));
+          promise.then(function (val){
+            if(val===true){
+              cs.src=smp;
+              song.innerHTML=ss;
+              singer.innerHTML=ssi;
+              image.src=si;
+            
+              if(pH.innerHTML=="ON"){
+                cs.play();
+                }
+                else{
+                cs.pause();
+                }
+          }
+        });
   }
     inter=0;
   }, 2000);
@@ -292,37 +301,49 @@ async function predictWebcam() {
 function gMovement(categoryName,deviceId,token,user,pswrd){
   if(clk==1){
     if(categoryName=="Open_Palm"){
-      if(changeT(deviceId,token,'active','true',0,user,pswrd)){
-        pH.innerHTML="ON";
-        cs.play();
-      }
+      let promise = Promise.resolve(changeT(deviceId,token,'active','true',0,user,pswrd));
+      promise.then(function (val) {
+        if(val===true){
+          pH.innerHTML="ON";
+          cs.play();
+          }
+      });
     }
     if(categoryName=="Closed_Fist"){
-      if(changeT(deviceId,token,'active','false',0,user,pswrd)){
+      let promise = Promise.resolve(changeT(deviceId,token,'active','false',0,user,pswrd));
+      promise.then(function (val) {
+        if(val===true){
       pH.innerHTML="OFF";
       cs.pause();
       }
-    }
+    });
   }
+}
   if(clk==2){
     if(categoryName=="Thumb_Up"){
       if(vol<1){
         vol=parseFloat(vol.toFixed(2))+0.01;
-        if(changeT(deviceId,token,'volume',parseInt(vol*100, 10),1,user,pswrd)){
-          cs.volume=vol;
-          var vs=parseInt(vol*100, 10);
-      vH.innerHTML=vs.toString();
+        let promise = Promise.resolve(changeT(deviceId,token,'volume',parseInt(vol*100, 10),1,user,pswrd));
+        promise.then(function (val){
+          if(val===true){
+            cs.volume=vol;
+            var vs=parseInt(vol*100, 10);
+            vH.innerHTML=vs.toString();
         }
+      });
       }
     }
     if(categoryName=="Thumb_Down"){
       if(vol>0){
         vol=parseFloat(vol.toFixed(2))-0.01;
-        if(changeT(deviceId,token,'volume',parseInt(vol*100, 10),1,user,pswrd)){
-          cs.volume=vol;
-          var vs=parseInt(vol*100, 10);
-      vH.innerHTML=vs.toString();
+        let promise = Promise.resolve(changeT(deviceId,token,'volume',parseInt(vol*100, 10),1,user,pswrd));
+        promise.then(function (val){
+          if(val===true){
+            cs.volume=vol;
+           var vs=parseInt(vol*100, 10);
+           vH.innerHTML=vs.toString();
         }
+      });
       }
     }
   }
@@ -342,6 +363,7 @@ async function changeT(deviceId,token,key,value,ios,user,pswrd){
     data="{\""+key+"\":"+value+"}";
   }
   var url="http://localhost:8080/api/plugins/telemetry/"+deviceId+"/SERVER_SCOPE";
+  try{
    const response = await  fetch(url, {method: 'POST', headers:{
       'Content-Type': 'application/json',
       'Accept':'application/json',
@@ -365,12 +387,18 @@ async function changeT(deviceId,token,key,value,ios,user,pswrd){
      else{
       return false;
      }
+  }
+    catch (e){
+      const response5 = await fetch('./logout.php');
+      document.location.href = 'login.html';
+   }
 }
 
 async function changeS(deviceId,token,key1,key2,key3,key4,value1,value2,value3,value4,user,pswrd){
   var  data="{\""+key1+"\":\""+value1+"\",\""+key2+"\":\""+value2+"\",\""+key3+"\":\""+value3+"\",\""+key4+"\":\""+value4+"\"}";
 
   var url="http://localhost:8080/api/plugins/telemetry/"+deviceId+"/SERVER_SCOPE";
+  try{
    const response = await  fetch(url, {method: 'POST', headers:{
       'Content-Type': 'application/json',
       'Accept':'application/json',
@@ -394,10 +422,15 @@ async function changeS(deviceId,token,key1,key2,key3,key4,value1,value2,value3,v
      else{
       return false;
      }
+    }
+    catch (e){
+      document.location.href = 'login.html';
+   }
 }
 
 async function getNewToken(user,pswrd){
   var data= '{\"username\":\"'+user+'\",\"password\":\"'+pswrd+'\"}';
+  try{
   const response1 = await  fetch('http://localhost:8080/api/auth/login', {method: 'POST', headers:{
   'Content-Type': 'application/json',
   'Accept':'application/json'
@@ -415,5 +448,10 @@ async function getNewToken(user,pswrd){
    times=0;
    enableCam();
    const response2 = await fetch('./tokens.php',{ method: 'POST', body: formData });
+}
+catch (e){
+  const response5 = await fetch('./logout.php');
+  document.location.href = 'login.html';
+}
 }
   })

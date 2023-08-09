@@ -18,6 +18,7 @@ async function logout() {
     user=data[4];
     pswrd=data[5];
    }
+   try{
     const response1 = await  fetch('http://localhost:8080/api/auth/logout', {method: 'POST', headers:{
        'Accept':'*/*',
        'X-Authorization': 'Bearer '+ token
@@ -52,6 +53,11 @@ async function logout() {
         const response5 = await fetch('./logout.php');
         document.location.href = 'login.html';
       }
+    }
+    catch (e){
+      const response5 = await fetch('./logout.php');
+      document.location.href = 'login.html';
+    }
     }
  
  
