@@ -12,5 +12,5 @@ A/C:
 server attributes(originals key-value pairs): active->false, fan->mid, mode->cool, temperature->27
 id-->a550cde0-257d-11ee-bf2c-99c7948225a1
 Speakers:
-server attributes(originals key-value pairs): active->false, volume->50, currentSong->1000KOSMOI.mp3, song->1000 Kosmoi, singer->Dani Gambino, image->1000kosmoi.jpg
+server attributes(originals key-value pairs): active->false, volume->50, currentSong->1000KOSMOI.mp3, song->1000 Kosmoi, singer->Dani Gambino, image->1000kosmoi.jpg, sid->1
 id-->cc96ff30-2624-11ee-bf2c-99c7948225a1

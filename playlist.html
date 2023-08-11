@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>srooms</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="controls.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+        <script type="text/javascript" src="playlist.js"></script>
+    </head>
+    
+    <body onload="logornot(),allof()">
+        <script type="text/javascript" src="isloggedin.js"></script>
+        <script type="text/javascript" src="logout.js"></script>
+        <label class="logo"> <a href="homepage.html"><img src="logo.png" class="myImage"/></a>
+            <div class="hello">
+                <p>srooms</p>
+            </div>            
+            <button onclick="logout()" id="logg"><img src="logout.png " class="logout"/></button> 
+        </label>
+
+            <div class="myform">
+                <h1 class="sensorname">Playlist</h1>
+                <div id="containerbWC">
+                </div>
+            </div>
+
+
+            <div class="footer-basic">
+                    <div class="social">
+                        <a href="https://www.facebook.com/valia.dourou">
+                            <i class="icon ion-social-facebook"></i>
+                        </a>
+                        <a href="https://www.instagram.com/balafas.d/">
+                            <i class="icon ion-social-instagram"></i>
+                        </a>
+                        <p class="copyright"> srooms © 2023</p>
+            </div>
+    </body>
+</html>

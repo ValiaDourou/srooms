@@ -2,33 +2,16 @@ import {
   GestureRecognizer,
   FilesetResolver
 } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0"
-let gestureRecognizer
-      let runningMode = "VIDEO"
-      let webcamRunning = false
-      const videoHeight = "360px"
-      const videoWidth = "480px"  
-      var songList = [
-        {
-            song: '1000 Kosmoi',
-            singer: 'Dani Gambino',
-            image: '1000kosmoi.jpg',
-            mp3: '1000KOSMOI.mp3'
-        },
-        {
-          song: '1000 Blunts',
-          singer: '$uicideboy$',
-          image: '1000BLUNTS.jpg',
-          mp3: '1000BLUNTS.mp3'
-        },
-        {
-          song: 'Escapism',
-          singer: 'RAYE',
-          image: 'ESCAPISM.jpg',
-          mp3: 'ESCAPISM.mp3'
-        }
-    ];
-    var token;
-    var rtoken;
+  let gestureRecognizer
+  let runningMode = "VIDEO"
+  let webcamRunning = false
+  const videoHeight = "360px"
+  const videoWidth = "480px"
+  const songList = new Array();
+
+
+  var token;
+  var rtoken;
       
   
   window.addEventListener('load', async function () {
@@ -37,7 +20,11 @@ let gestureRecognizer
     var sname = document.getElementById('sname');    
     var singer = document.getElementById('artistname');    
     var song = document.getElementById('songname');    
-    var image = document.getElementById('image');    
+    var image = document.getElementById('image');   
+    var mdiv = document.getElementById('musicContainer');
+    const video = document.getElementById("video");
+    var editB = document.getElementById("editB");
+    var cs =document.getElementById("mp3c");
 
     var clk;
     var uid;
@@ -50,6 +37,7 @@ let gestureRecognizer
     var user;
     var pswrd;
     var times=0;
+    var em=0;
     var formData = new FormData();
      formData.append('act',3);
      const response = await fetch('./tokens.php',{ method: 'POST', body: formData });
@@ -64,8 +52,23 @@ let gestureRecognizer
       dname=data[6];
       user=data[7];
       pswrd=data[8];
-     }    
+     }  
+     const r = await fetch('./songs.php');
+     var dr=await r.json();
+     if (dr.length===0){
+      em=1;
+    }else{
+     for (let v = 0; v < dr.length; v++) {
+       songList.push(dr[v]);
+     }
+ }  
      sname.innerHTML=dname;
+     if(em==1){
+      mdiv.style.display='none';
+      pH.innerHTML="-";
+      vH.innerHTML="-";
+      video.poster='nosongs.png'
+     }else{
      var url="http://localhost:8080/api/plugins/telemetry/DEVICE/"+did+"/values/attributes";
      try{
      const response1 = await  fetch(url, {method: 'GET', headers:{
@@ -103,8 +106,6 @@ let gestureRecognizer
     else{
     var obj = await response1.json();
     }
-    var cs= document.getElementById('mp3c');
-
     for(var i=0;i<obj.length;i++){
       if(obj[i].key=='currentSong'){
         cs.src=obj[i].value;
@@ -156,7 +157,6 @@ const createGestureRecognizer = async () => {
 }
 createGestureRecognizer()
 
-const video = document.getElementById("video")
 const canvasElement = document.getElementById("output_canvas")
 const canvasCtx = canvasElement.getContext("2d")
 const gestureOutput = document.getElementById("gesture_output")
@@ -186,21 +186,23 @@ if (hasGetUserMedia()) {
     clk=3;
     setInterval(function() {
       if(inter==1){
-      var smp,ss,ssi,si;
+      var smp,ss,ssi,si,sid;
       var index = songList.findIndex(item => item.song == song.innerHTML);
       if(songList.length>index+1){
       smp=songList[index+1].mp3;
       ss=songList[index+1].song;
       ssi=songList[index+1].singer;
       si=songList[index+1].image;
+      sid=songList[index+1].id;
         }
         else{
           smp=songList[0].mp3;
           ss=songList[0].song;
           ssi=songList[0].singer;
-          si=songList[0].image;       
+          si=songList[0].image;   
+          sid=songList[0].id;    
          }
-         let promise = Promise.resolve(changeS(did,token,'image','song','singer','currentSong',si,ss,ssi,smp,user,pswrd));
+         let promise = Promise.resolve(changeS(did,token,'sid','image','song','singer','currentSong',sid,si,ss,ssi,smp,user,pswrd));
           promise.then(function (val){
             if(val===true){
               cs.src=smp;
@@ -394,8 +396,8 @@ async function changeT(deviceId,token,key,value,ios,user,pswrd){
    }
 }
 
-async function changeS(deviceId,token,key1,key2,key3,key4,value1,value2,value3,value4,user,pswrd){
-  var  data="{\""+key1+"\":\""+value1+"\",\""+key2+"\":\""+value2+"\",\""+key3+"\":\""+value3+"\",\""+key4+"\":\""+value4+"\"}";
+async function changeS(deviceId,token,key0,key1,key2,key3,key4,value0,value1,value2,value3,value4,user,pswrd){
+  var  data="{\""+key0+"\":\""+value0+"\",\""+key1+"\":\""+value1+"\""+",\""+key2+"\":\""+value2+"\",\""+key3+"\":\""+value3+"\",\""+key4+"\":\""+value4+"\"}";
 
   var url="http://localhost:8080/api/plugins/telemetry/"+deviceId+"/SERVER_SCOPE";
   try{
@@ -413,7 +415,7 @@ async function changeS(deviceId,token,key1,key2,key3,key4,value1,value2,value3,v
         if(times==1){
         webcamRunning = false;
       getNewToken(user,pswrd);
-      changeS(deviceId,token,key1,key2,key3,key4,value1,value2,value3,value4,user,pswrd);
+      changeS(deviceId,token,key0,key1,key2,key3,key4,value0,value1,value2,value3,value4,user,pswrd);
         }
         else{
           return false;
@@ -454,4 +456,10 @@ catch (e){
   document.location.href = 'login.html';
 }
 }
+     
+}
+     editB.addEventListener('click', () => {
+      document.location.href = 'playlist.html';
+  });
+
   })
