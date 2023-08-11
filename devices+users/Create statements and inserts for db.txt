@@ -1,0 +1,15 @@
+SET GLOBAL sql_mode='NO_AUTO_VALUE_ON_ZERO';
+DROP DATABASE IF EXISTS thingsboardSongs;
+CREATE DATABASE thingsboardSongs;
+USE thingsboardSongs;
+
+CREATE TABLE songs(
+id INT NOT NULL AUTO_INCREMENT,
+song VARCHAR(255) NOT NULL,
+singer VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+image VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+mp3  VARCHAR(255) NOT NULL,
+PRIMARY KEY(id)
+);
+
+INSERT INTO songs VALUES(null,'1000 Kosmoi','Dani Gambino','songs/1000kosmoi.jpg','songs/1000KOSMOI.mp3'),(null,'1000 Blunts','$uicideboy$','songs/1000BLUNTS.jpg','songs/1000BLUNTS.mp3'),(null,'Escapism','RAYE','songs/ESCAPISM.jpg','songs/ESCAPISM.mp3');
