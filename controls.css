@@ -474,3 +474,63 @@ body{
     background-color: #944a88;
     border: 2px solid #955cc6;
   }
+
+  .myform1 {
+    display: grid;
+    grid-template-columns: auto;
+    text-align:center;
+    width:75%;
+    max-width:600px;
+    min-height: 390px;
+    overflow-y: hidden;
+    background:#b39bc8;
+    color:#fff;
+    margin: auto;
+    position:relative;
+    box-sizing:border-box;
+    border-radius: 10px;
+    box-shadow: 5px 5px #af2d99;
+    padding-top:20px;
+    padding-bottom: 20px;
+    margin-top: 50px;
+    } 
+
+    .gesture_container {
+      display: grid;
+      grid-template-columns: 0.5fr 2fr;
+      text-align:center;
+      width:95%;
+      max-width:600px;
+      height: 100%;
+      overflow-y: hidden;
+      background:#b39bc8;
+      color:#fff;
+      margin: auto;
+      position:relative;
+      box-sizing:border-box;
+      border-radius: 10px;
+      padding-top:20px;
+      } 
+  
+      .open_palm_gesture, .closed_palm_gesture, .thumbs_up_gesture, .thumbs_down_gesture, .i_love_you_gesture, .victory_gesture{
+        width: 30%;
+        height: auto;
+        margin: auto;
+      }
+
+      .open_palm_description, .closed_palm_description, .thumbs_up_description, .thumbs_down_description, .i_love_you_description, .victory_description{
+        width: 100%;
+        height: auto;
+        margin: auto;
+        margin-left: 0px;
+      }
+
+      .instructions{
+        margin:0;
+        font-size:24px;
+        width: 80%;
+        box-shadow: 0px 2px #af2d99;
+        margin: auto;
+        position: relative;
+        margin-bottom: 5px;
+      }
