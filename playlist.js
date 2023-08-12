@@ -185,15 +185,8 @@ async function changeS(deviceId,token,key0,key1,key2,key3,key4,value0,value1,val
       return true;
        }
        else if(response.status==401){
-        times++;
-          if(times==1){
-          webcamRunning = false;
         getNewToken(user,pswrd);
         changeS(deviceId,token,key0,key1,key2,key3,key4,value0,value1,value2,value3,value4,user,pswrd);
-          }
-          else{
-            return false;
-          }
        }
        else{
         return false;

@@ -23,7 +23,33 @@
                 <h1 class="sensorname">Playlist</h1>
                 <div id="containerbWC">
                 </div>
+                <div class="sensorcontrols1">
+                    <a href="#addF"><button class="edb" id="adds">Add a song</button></a>
+                </div>
             </div>
+
+            <div id="addF" class="overlay">
+                <div class="myform">
+                    <a class="close" id="cr" href="#">&times;</a>
+                    <h1>Add a song</h1>
+                    <form id="AddSong">
+                        <p>Song Title</p>
+                        <input type="text" id="asong" name="saong" required placeholder="Enter the title of the song">
+                        <p>Artist Name</p>
+                        <input type="text" id="aartist" name="aartist" required placeholder="Enter the artist's name">
+                        <p>Song Mp3 File </p>
+                        <input type="file" id="mymp3file" name="mymp3file"><br>
+                        <a id="statusm"></a> 
+                        <p>Song Cover Image </p>
+                        <input type="file" id="myimfile" name="myimfile"><br>
+                        <a id="statusi"></a> <br>
+                        <button type="submit" id="add">Add</button><br>
+                        <a id="statusr"></a>
+                    </form>
+                    <script type="text/javascript" src="addsong.js"></script>
+    
+            </div>
+                </div>
 
 
             <div class="footer-basic">

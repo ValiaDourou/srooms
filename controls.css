@@ -432,3 +432,45 @@ body{
   .pmusicgridcontainer button{
     padding: 0px 0px ;
   }
+
+  .overlay {
+    position: fixed;
+    max-width:100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.9);
+    transition: opacity 100ms;
+    display: none;
+    opacity: 0;
+    z-index:1;
+    }
+   
+  .overlay:target {
+    display: block;
+    opacity: 1;
+  }
+  .myform .close{
+    position: absolute;
+    top: 15px;
+    left:90%;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: rgb(134, 134, 134);
+  }
+    
+  input[type=file]::file-selector-button {
+    border: 2px solid #962383;
+    padding: 2px 2px;
+    border-radius: 10px;
+    background-color: #a47cc7;
+    transition: 1s;
+  }
+  
+  input[type=file]::file-selector-button:hover {
+    background-color: #944a88;
+    border: 2px solid #955cc6;
+  }
