@@ -86,23 +86,25 @@ body{
     }
     
    .myform button{
-    border:none;
-    outline:none;
     height:40px;
-    width:60%;
-    background:#af2d99;
-    color:#fff;
-    font-size:18px;
-    border-radius:20px;
-    padding: 0px 20px;
+    width:100px;
     margin-top: 10px;
-    margin-bottom:10px;
-    text-align:center;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 0.25em 0.50em;
+    color: #fff;
+    background-color: #af2d99;
+    border: 5px solid #af2d99;
+    border-radius: 20px;
+    transition: all 0.3s;
+    cursor: pointer;
     }
     
-   .myform button:hover{
-    cursor:pointer; 
-    opacity: .75;
+    .myform button:hover{
+      transform: translateY(-5px);
+      background-color:#b39bc8;
+      color: #fff;
+      box-shadow: 0 3px 4px 0 rgba(0,0,0,0.24),0 5px 12px 0 rgba(0,0,0,0.19);
     }
     
    .myform a{

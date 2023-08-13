@@ -121,8 +121,10 @@ body{
     }
     
    .myform button:hover{
-    cursor:pointer; 
-    opacity: .75;
+    transform: translateY(-5px);
+    background-color:#b39bc8;
+    color: #fff;
+    box-shadow: 0 3px 4px 0 rgba(0,0,0,0.24),0 5px 12px 0 rgba(0,0,0,0.19);
     }
     
    .myform a{
@@ -211,48 +213,81 @@ body{
         }
 
         #logg {
-            border:none;
-            outline:none;
-            height:50px;
-            width: 50px;
-            font-size: 17px;
-            background:#af2d99;
-            margin-left: auto;
-            margin-right: 10px;
-            margin-top: 30px;
-            margin-bottom:10px;
-            float: right;
-            color:#fff;
-            border-radius:20px;
-            padding: 0px 10px;
-            text-align:center;
+          font-size: 18px;
+          font-weight: 700;
+          padding: 0.25em 0.50em;
+          color:#fff;
+          background-color: #af2d99;
+          border: 5px solid #af2d99;
+          border-radius: 20px;
+          transition: all 0.3s;
+          float: right;
+          margin-left: auto;
+          margin-right: 10px;
+          margin-top: 30px;
+          margin-bottom:10px;
         }
 
         button:hover{
-          cursor:pointer; 
+          transform: translateY(-5px);
+          background-color:#b39bc8;
+          color: #fff;
+          cursor: pointer;
+          box-shadow: 0 3px 4px 0 rgba(0,0,0,0.24),0 5px 12px 0 rgba(0,0,0,0.19);
           }
 
           .myform .powerB{
             margin: auto;
             margin-top: 10px;
+            transition: all 0.3s;
+            padding: 0.25em 0.50em;
+            color:#fff;
+            background-color: #af2d99;
+            border: 5px solid #af2d99;
+            border-radius: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
           }
 
           .myform .intensityB{
             margin: auto;
             margin-top: 10px;
+            transition: all 0.3s;
+            padding: 0.25em 0.50em;
+            color:#fff;
+            background-color: #af2d99;
+            border: 5px solid #af2d99;
+            border-radius: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
           }
 
           .myform .songS{
             margin: auto;
             margin-top: 10px;
             padding: 0px 0px;
+            transition: all 0.3s;
+            color:#fff;
+            background-color: #af2d99;
+            border: 5px solid #af2d99;
+            border-radius: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
           }
+
           .myform .edb{
             margin: auto;
             margin-top: 10px;
             padding: 0px 0px;
             height:40px;
             width:200px;
+            transition: all 0.3s;
+            color:#fff;
+            background-color: #af2d99;
+            border: 5px solid #af2d99;
+            border-radius: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
           }
 
           .myform .pH{
