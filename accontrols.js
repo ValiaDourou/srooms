@@ -25,6 +25,8 @@ let gestureRecognizer
     var dname;
     var mi=0;
     var fi=0;
+    var tu=0;
+    var td=0;
     var temp;
     var user;
     var pswrd;
@@ -148,6 +150,32 @@ let gestureRecognizer
       });
         document.getElementById('tH').addEventListener('click', () => {
           clk=2;
+          setInterval(function() {
+            if(tu==1){
+              if(temp<35){
+                temp=temp+1;
+                let promise = Promise.resolve(changeT(did,token,'temperature',temp,1,user,pswrd));
+            promise.then(function (val){
+              if(val===true){
+                tH.innerHTML=temp.toString();
+            }
+          });
+                }
+                tu=0;
+          }
+          if(td==1){
+            if(temp>14){
+              temp=temp-1;
+              let promise = Promise.resolve(changeT(did,token,'temperature',temp,1,user,pswrd));
+          promise.then(function (val){
+            if(val===true){
+              tH.innerHTML=temp.toString();
+          }
+        });
+              }
+              td=0;
+          }
+        }, 500);
           if(webcamRunning===false){
             enableCam();
             }
@@ -299,26 +327,10 @@ let gestureRecognizer
       }
         if(clk==2){
           if(categoryName=="Thumb_Up"){
-            if(temp<35){
-            temp=temp+1;
-            let promise = Promise.resolve(changeT(deviceId,token,'temperature',temp,1,user,pswrd));
-        promise.then(function (val){
-          if(val===true){
-            tH.innerHTML=temp.toString();
-        }
-      });
-            }
+            tu=1;
           }
           if(categoryName=="Thumb_Down"){
-            if(temp>14){
-            temp=temp-1;
-            let promise = Promise.resolve(changeT(deviceId,token,'temperature',temp,1,user,pswrd));
-        promise.then(function (val){
-          if(val===true){
-            tH.innerHTML=temp.toString();
-        }
-      });
-            }
+            td=1;
           }
         }
         if(clk==3){

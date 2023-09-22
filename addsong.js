@@ -99,7 +99,7 @@ if(imk==1 && mp3k==1){
        statusF.innerHTML = 'Something went wrong, please try again.';
    }
    else{
-    statusF.innerHTML = 'You have successfully added the song!';
+    regc.click();
    }
 }
 else{

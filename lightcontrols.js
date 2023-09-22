@@ -24,6 +24,8 @@ let gestureRecognizer
     var user;
     var pswrd;
     var times=0;
+    var tu=0;
+    var td=0;
     var formData = new FormData();
      formData.append('act',3);
      const response = await fetch('./tokens.php',{ method: 'POST', body: formData });
@@ -135,6 +137,32 @@ catch (e){
     if(uauth=='TENANT_ADMIN'){
     document.getElementById('iH').addEventListener('click', () => {
       clk=2;
+      setInterval(function() {
+        if(tu==1){
+          if(inten<100){
+            inten=inten+1;
+            let promise = Promise.resolve(changeT(did,token,'intensity',inten,1,user,pswrd));
+            promise.then(function (val){
+              if(val===true){
+            iH.innerHTML=inten.toString();
+            }
+          });
+          }
+            tu=0;
+      }
+      if(td==1){
+        if(inten>0){
+          inten=inten-1;
+          let promise = Promise.resolve(changeT(did,token,'intensity',inten,1,user,pswrd));
+          promise.then(function (val){
+            if(val===true){
+        iH.innerHTML=inten.toString();
+          }
+        });
+      }
+          td=0;
+      }
+    }, 500);
       if(webcamRunning===false){
         enableCam();
         }
@@ -235,26 +263,10 @@ catch (e){
   }
     if(clk==2){
       if(categoryName=="Thumb_Up"){
-        if(inten<100){
-        inten=inten+1;
-        let promise = Promise.resolve(changeT(deviceId,token,'intensity',inten,1,user,pswrd));
-        promise.then(function (val){
-          if(val===true){
-        iH.innerHTML=inten.toString();
-        }
-      });
-      }
+        tu=1;
     }
       if(categoryName=="Thumb_Down"){
-        if(inten>0){
-          inten=inten-1;
-          let promise = Promise.resolve(changeT(deviceId,token,'intensity',inten,1,user,pswrd));
-          promise.then(function (val){
-            if(val===true){
-        iH.innerHTML=inten.toString();
-          }
-        });
-      }
+        td=1;
     }
   }
 }

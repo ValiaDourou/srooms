@@ -38,6 +38,8 @@ import {
     var pswrd;
     var times=0;
     var em=0;
+    var tu=0;
+    var td=0;
     var formData = new FormData();
      formData.append('act',3);
      const response = await fetch('./tokens.php',{ method: 'POST', body: formData });
@@ -177,6 +179,36 @@ if (hasGetUserMedia()) {
 });
   document.getElementById('vH').addEventListener('click', () => {
     clk=2;
+    setInterval(function() {
+      if(tu==1){
+        if(vol<1){
+          vol=parseFloat(vol.toFixed(2))+0.01;
+          let promise = Promise.resolve(changeT(did,token,'volume',parseInt(vol*100, 10),1,user,pswrd));
+          promise.then(function (val){
+            if(val===true){
+              cs.volume=vol;
+              var vs=parseInt(vol*100, 10);
+              vH.innerHTML=vs.toString();
+          }
+        });
+        }
+          tu=0;
+    }
+    if(td==1){
+      if(vol>0){
+        vol=parseFloat(vol.toFixed(2))-0.01;
+        let promise = Promise.resolve(changeT(did,token,'volume',parseInt(vol*100, 10),1,user,pswrd));
+        promise.then(function (val){
+          if(val===true){
+            cs.volume=vol;
+           var vs=parseInt(vol*100, 10);
+           vH.innerHTML=vs.toString();
+        }
+      });
+      }
+        td=0;
+    }
+  }, 500);
     if(webcamRunning===false){
       enableCam();
       }
@@ -323,30 +355,10 @@ function gMovement(categoryName,deviceId,token,user,pswrd){
 }
   if(clk==2){
     if(categoryName=="Thumb_Up"){
-      if(vol<1){
-        vol=parseFloat(vol.toFixed(2))+0.01;
-        let promise = Promise.resolve(changeT(deviceId,token,'volume',parseInt(vol*100, 10),1,user,pswrd));
-        promise.then(function (val){
-          if(val===true){
-            cs.volume=vol;
-            var vs=parseInt(vol*100, 10);
-            vH.innerHTML=vs.toString();
-        }
-      });
-      }
+      tu=1;
     }
     if(categoryName=="Thumb_Down"){
-      if(vol>0){
-        vol=parseFloat(vol.toFixed(2))-0.01;
-        let promise = Promise.resolve(changeT(deviceId,token,'volume',parseInt(vol*100, 10),1,user,pswrd));
-        promise.then(function (val){
-          if(val===true){
-            cs.volume=vol;
-           var vs=parseInt(vol*100, 10);
-           vH.innerHTML=vs.toString();
-        }
-      });
-      }
+      td=1;
     }
   }
   if(clk==3){
